@@ -1,0 +1,19 @@
+name: Check
+# Read-only validation of the placeholder pages. No secrets, no deploy step.
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # checkout v7.0.1, the same pinned hash the archive repositories use.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Validate the pages
+        run: python3 scripts/check.py
