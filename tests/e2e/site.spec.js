@@ -109,4 +109,3 @@ test.describe('search', () => {
     expect(new URL(page.url()).search).toContain('kind=Talk');
   });
 });
-});
