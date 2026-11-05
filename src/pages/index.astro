@@ -1,15 +1,19 @@
 ---
+import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RecordRow from '../components/RecordRow.astro';
 import { featured, latest, topicCounts } from '../lib/catalog';
 import { topicLabels, visibleRecords } from '../lib/records';
 import { GITHUB_URL, IS_PREVIEW, SITE_NAME, SITE_URL } from '../site';
+import headshot from '../assets/headshot.jpg';
+import profile from '../data/profile.json';
 
 const recs = await visibleRecords();
 const picks = featured(recs);
 const recent = latest(recs);
 const counts = topicCounts(recs);
 const themes = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8);
+const photo = await getImage({ src: headshot, width: 640, height: 640, format: 'webp' });
 const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -17,14 +21,23 @@ const person = {
   name: SITE_NAME,
   alternateName: 'steveonjava',
   url: `${SITE_URL}/`,
+  description: profile.bio,
+  jobTitle: profile.job_title,
+  worksFor: { '@type': 'Organization', name: profile.employer },
+  image: new URL(photo.src, SITE_URL).href,
   sameAs: [GITHUB_URL],
 };
 ---
 <BaseLayout description="Talks, writing, books and projects by Stephen Chin, also known as steveonjava." jsonLd={person} indexed>
-  <h1>Stephen Chin</h1>
-  <p class="handle">Also known as steveonjava</p>
-  <p class="lede">A catalog of talks, writing, books and projects, with the history behind them.</p>
-  <p><a href="/work/">Browse all work</a> or <a href="/search/">search the catalog</a>.</p>
+  <div class="intro">
+    <Image class="portrait" src={headshot} alt={profile.headshot_alt} width={176} height={176} densities={[1, 2]} format="webp" quality={80} loading="eager" fetchpriority="high" />
+    <div class="intro-text">
+      <h1>Stephen Chin</h1>
+      <p class="handle">Also known as steveonjava</p>
+      <p class="bio">{profile.bio}</p>
+      <p><a href="/work/">Browse all work</a> or <a href="/search/">search the catalog</a>.</p>
+    </div>
+  </div>
 
   <div data-pagefind-ignore>
 

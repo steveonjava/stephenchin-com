@@ -13,7 +13,7 @@
 - Never write a missing month or day as `01`. A repository's creation date is not the date of the work.
 - Seeds are candidates. A page that was fetched does not prove a video plays, a rights holder agreed, or that Stephen wrote what he is credited with.
 - Write summaries in the owner's voice only from his own words. Do not invent a quote, a date, a provider id, or a first-person claim.
-- Public professional sources only. No private messages, family details, internal planning, or unpublished book text.
+- Public professional sources only. No private messages, internal planning, or unpublished book text. Family details appear only where the owner put them in his own approved bio.
 - Do not place photographs of private individuals.
 
 ## Promotion

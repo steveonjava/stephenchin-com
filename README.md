@@ -9,6 +9,7 @@ Source for stephenchin.com. Today the published site is a single placeholder pag
 - `src/content/works/`: reviewed records. Only `review_status: published` records appear in production.
 - `src/content/candidates/`: unreviewed seed records from the research brief. They appear only in the preview build, never in production.
 - `src/data/topics.json`, `src/data/sources.json`: topic labels and aliases, and the source ledger.
+- `src/data/profile.json`, `src/assets/headshot.jpg`: the owner's biography, word for word, and his portrait with its metadata stripped. `check_catalog.py` fails if the portrait carries EXIF, XMP or IPTC, because Git history is public and permanent.
 - `scripts/`: `check_catalog.py` (catalog rules), `check_output.py` (audit of a built folder), `check_lighthouse.mjs` (score budget), `check.py` (placeholder pages).
 - `tests/`: self-tests for the checkers, unit tests for the date and sort helpers, and Playwright tests.
 

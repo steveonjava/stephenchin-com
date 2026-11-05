@@ -147,7 +147,88 @@ def check(root):
             featured += 1
     if featured > 3:
         errors.append(f"works: {featured} featured records; the homepage shows three")
+    check_profile(root, errors)
     return errors, len(works), len(cands)
+
+
+def image_metadata(data):
+    """Names of the metadata blocks a photograph carries. A portrait committed to a public repository keeps
+    its EXIF, XMP and IPTC in Git history forever, so none of them may be present."""
+    found = []
+    if data[:2] == b"\xff\xd8":
+        i = 2
+        while i + 4 <= len(data) and data[i] == 0xFF:
+            marker = data[i + 1]
+            if marker in (0xDA, 0xD9):
+                break
+            if 0xD0 <= marker <= 0xD7 or marker == 0x01:
+                i += 2
+                continue
+            length = int.from_bytes(data[i + 2:i + 4], "big")
+            if length < 2:
+                break
+            segment = data[i + 4:i + 2 + length]
+            if marker == 0xE1 and segment.startswith(b"Exif\0\0"):
+                found.append("EXIF")
+            elif marker == 0xE1 and b"ns.adobe.com/xap" in segment[:40]:
+                found.append("XMP")
+            elif marker == 0xED and segment.startswith(b"Photoshop 3.0"):
+                found.append("IPTC")
+            elif marker == 0xFE:
+                found.append("comment")
+            i += 2 + length
+    elif data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        i = 12
+        while i + 8 <= len(data):
+            fourcc = data[i:i + 4]
+            size = int.from_bytes(data[i + 4:i + 8], "little")
+            if fourcc == b"EXIF":
+                found.append("EXIF")
+            elif fourcc == b"XMP ":
+                found.append("XMP")
+            i += 8 + size + (size & 1)
+    return found
+
+
+PROFILE_FIELDS = {"bio", "headshot_alt", "job_title", "employer"}
+
+
+def check_profile(root, errors):
+    root = Path(root)
+    path = root / "src/data/profile.json"
+    if not path.is_file():
+        errors.append("src/data/profile.json is missing")
+        return
+    try:
+        profile = json.loads(path.read_text(encoding="utf8"))
+    except ValueError:
+        errors.append("src/data/profile.json does not parse")
+        return
+    if set(profile) != PROFILE_FIELDS:
+        errors.append(f"profile.json fields differ: missing {sorted(PROFILE_FIELDS - set(profile))}, unknown {sorted(set(profile) - PROFILE_FIELDS)}")
+    for key in sorted(PROFILE_FIELDS & set(profile)):
+        value = profile[key]
+        if not isinstance(value, str) or not value.strip():
+            errors.append(f"profile.{key}: must be a non-empty string")
+        elif HTML.search(value):
+            errors.append(f"profile.{key}: markup in text")
+        elif value != value.strip() or "\n" in value or "  " in value:
+            errors.append(f"profile.{key}: stray whitespace or a line break")
+    bio = profile.get("bio") if isinstance(profile.get("bio"), str) else ""
+    for key in ("job_title", "employer"):
+        value = profile.get(key)
+        if isinstance(value, str) and value and value not in bio:
+            errors.append(f"profile.{key} {value!r} does not appear in the bio, so the structured data would say something the bio does not")
+    alt = profile.get("headshot_alt")
+    if isinstance(alt, str) and len(alt) > 150:
+        errors.append("profile.headshot_alt is longer than 150 characters")
+    image = root / "src/assets/headshot.jpg"
+    if not image.is_file():
+        errors.append("src/assets/headshot.jpg is missing")
+    else:
+        found = image_metadata(image.read_bytes())
+        if found:
+            errors.append(f"src/assets/headshot.jpg carries {', '.join(found)}; strip it before committing, because Git history is public and permanent")
 
 
 def main():

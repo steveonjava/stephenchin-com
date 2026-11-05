@@ -7,10 +7,13 @@ preview:    every page is noindex, robots.txt blocks all, no sitemap, every reco
 production: nothing unreviewed is present anywhere in the output, canonical links, sitemap, robots.txt.
 Both:       internal links resolve, no external scripts or styles, JSON-LD parses, feed and search index exist.
 """
+import gzip
+import importlib.util
 import json
 import re
 import sys
 import xml.etree.ElementTree as ET
+from html import unescape as html_unescape
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -93,6 +96,63 @@ def load_records(root, include_works_state):
             r = json.loads(f.read_text(encoding="utf8"))
             out.append((f.stem, group, r))
     return out
+
+
+def sibling(name):
+    spec = importlib.util.spec_from_file_location(name, Path(__file__).with_name(name + ".py"))
+    if spec is None or spec.loader is None:
+        raise ImportError(name)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def index_texts(dist):
+    """Text of every Pagefind fragment. A fragment is gzip, then a 12-byte signature, then JSON holding the
+    page's title, url and full text. Returns (list of texts, number of fragment files)."""
+    texts, count = [], 0
+    for f in sorted((dist / "pagefind").rglob("*.pf_fragment")):
+        count += 1
+        raw = f.read_bytes()
+        try:
+            raw = gzip.decompress(raw)
+        except OSError:
+            pass
+        if raw.startswith(b"pagefind_dcd"):
+            raw = raw[len(b"pagefind_dcd"):]
+        text = raw.decode("utf8", errors="ignore")
+        try:
+            parts, stack = [], [json.loads(text)]
+            while stack:
+                o = stack.pop()
+                if isinstance(o, dict):
+                    stack.extend(o.values())
+                elif isinstance(o, list):
+                    stack.extend(o)
+                elif isinstance(o, str):
+                    parts.append(o)
+            text = "\n".join(parts)
+        except ValueError:
+            pass
+        texts.append(text.replace("\u200b", ""))
+    return texts, count
+
+
+def read_bio(root):
+    path = Path(root) / "src/data/profile.json"
+    if not path.is_file():
+        return None
+    return json.loads(path.read_text(encoding="utf8")).get("bio")
+
+
+def image_problems(dist, meta):
+    errors = []
+    for f in sorted(dist.rglob("*")):
+        if f.is_file() and f.suffix.lower() in (".jpg", ".jpeg", ".webp"):
+            found = meta.image_metadata(f.read_bytes())
+            if found:
+                errors.append(f"{f.relative_to(dist).as_posix()}: image carries {', '.join(found)}")
+    return errors
 
 
 def audit(mode, dist, root):
@@ -191,13 +251,19 @@ def audit(mode, dist, root):
         errors.append(f"record pages differ: extra {sorted(set(work_dirs) - set(want_dirs))}, missing {sorted(set(want_dirs) - set(work_dirs))}")
 
     # Nothing hidden may appear anywhere in the output, not even in the search index or the feed.
-    scan = all_text
-    for extra in (dist / "rss.xml",):
-        if extra.is_file():
-            scan += extra.read_text(encoding="utf8")
-    for f in dist.glob("pagefind/**/*"):
-        if f.suffix in (".json", ".js") and f.is_file():
-            scan += f.read_text(encoding="utf8", errors="ignore")
+    fragments, fragment_count = index_texts(dist)
+    if fragment_count == 0:
+        errors.append("no search fragments found, so the search index cannot be audited")
+    scan = html_unescape(all_text)
+    if (dist / "rss.xml").is_file():
+        scan += html_unescape((dist / "rss.xml").read_text(encoding="utf8"))
+    scan += "\n".join(fragments)
+    bio = read_bio(root)
+    if bio:
+        # The owner's own biography may name a work that has no published record yet. Remove exactly that
+        # text and nothing else, so the same title anywhere else in the output still fails.
+        scan = scan.replace(bio, "")
+    errors += image_problems(dist, sibling("check_catalog"))
     for i, g, r in hidden:
         for needle in (r["title"], r["url"]):
             if needle and needle in scan:

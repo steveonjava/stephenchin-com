@@ -106,3 +106,12 @@ dl.facts dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 
 .excerpt { margin: .35rem 0 0; color: var(--muted); font-size: 1rem; }
 mark { background: color-mix(in srgb, var(--accent) 22%, transparent); color: inherit; padding: 0 .1em; }
+
+.intro { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 1.25rem 2rem; align-items: start; margin: 0 0 1.5rem; }
+.portrait { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 10px; background: var(--panel); }
+.intro-text > :last-child { margin-bottom: 0; }
+.bio { max-width: var(--measure); font-size: 1.1rem; }
+@media (max-width: 40rem) {
+  .intro { grid-template-columns: minmax(0, 1fr); }
+  .portrait { width: 9rem; }
+}
