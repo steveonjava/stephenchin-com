@@ -4,6 +4,7 @@ import { readdirSync, readFileSync, mkdirSync } from 'node:fs';
 
 const CAND = 'src/content/candidates';
 const candidates = readdirSync(CAND).filter((f) => f.endsWith('.json')).map((f) => ({ id: f.slice(0, -5), ...JSON.parse(readFileSync(`${CAND}/${f}`, 'utf8')) }));
+const profile = JSON.parse(readFileSync('src/data/profile.json', 'utf8'));
 const KEY_PAGES = ['/', '/work/', '/talks/', '/topics/', '/topics/javafx/', '/work/talk-crabrag/', '/search/', '/404.html'];
 
 mkdirSync('screenshots', { recursive: true });
@@ -25,6 +26,17 @@ test.describe('every key template', () => {
       await page.screenshot({ path: `screenshots/${info.project.name}-${slug(path)}.png`, fullPage: true });
     });
   }
+});
+
+test.describe('home profile', () => {
+  test('shows the supplied bio word for word and a portrait that loads', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('.bio')).toHaveText(profile.bio);
+    const img = page.locator('img.portrait');
+    await expect(img).toBeVisible();
+    await expect(img).toHaveAttribute('alt', profile.headshot_alt);
+    expect(await img.evaluate((el) => el.naturalWidth), 'portrait decoded').toBeGreaterThan(0);
+  });
 });
 
 test.describe('without JavaScript', () => {

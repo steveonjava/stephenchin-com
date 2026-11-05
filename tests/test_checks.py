@@ -5,6 +5,8 @@ Each test builds a small fixture tree in a temporary folder, runs a checker on i
 deliberately broken input is reported and a good one is not. Reads and writes files only: no Astro,
 no browser, no network.
 """
+import gzip
+import html
 import importlib.util
 import json
 import tempfile
@@ -41,10 +43,27 @@ def record(**changes):
     return r
 
 
-def write_tree(root, works=None, candidates=None):
+PROFILE = {
+    "bio": "Jane Doe is Head of Things at Acme and writes books.",
+    "headshot_alt": "Portrait of Jane Doe outdoors",
+    "job_title": "Head of Things",
+    "employer": "Acme",
+}
+CLEAN_JPEG = b"\xff\xd8\xff\xd9"
+
+
+def jpeg_with(marker, payload):
+    return b"\xff\xd8" + marker + (len(payload) + 2).to_bytes(2, "big") + payload + b"\xff\xd9"
+
+
+def write_tree(root, works=None, candidates=None, profile=PROFILE, headshot=CLEAN_JPEG):
     root = Path(root)
-    for folder in ("src/content/works", "src/content/candidates", "src/data"):
+    for folder in ("src/content/works", "src/content/candidates", "src/data", "src/assets"):
         (root / folder).mkdir(parents=True, exist_ok=True)
+    if profile is not None:
+        (root / "src/data/profile.json").write_text(json.dumps(profile))
+    if headshot is not None:
+        (root / "src/assets/headshot.jpg").write_bytes(headshot)
     (root / "src/data/topics.json").write_text(json.dumps([{"id": "java", "label": "Java"}]))
     (root / "src/data/sources.json").write_text(json.dumps([{"id": "S01"}]))
     for rid, r in (works or {}).items():
@@ -53,9 +72,9 @@ def write_tree(root, works=None, candidates=None):
         (root / "src/content/candidates" / f"{rid}.json").write_text(json.dumps(r))
 
 
-def problems(works=None, candidates=None):
+def problems(works=None, candidates=None, **tree):
     with tempfile.TemporaryDirectory() as tmp:
-        write_tree(tmp, works, candidates)
+        write_tree(tmp, works, candidates, **tree)
         return catalog.check(tmp)[0]
 
 
@@ -144,6 +163,37 @@ class CatalogChecks(unittest.TestCase):
         self.assertTrue(any("both works and candidates" in e for e in errs))
 
 
+class ProfileChecks(unittest.TestCase):
+    def test_good_profile_passes(self):
+        self.assertEqual(problems(), [])
+
+    def test_missing_profile_and_headshot_are_reported(self):
+        self.assertTrue(any("profile.json is missing" in e for e in problems(profile=None)))
+        self.assertTrue(any("headshot.jpg is missing" in e for e in problems(headshot=None)))
+
+    def test_bad_fields_are_reported(self):
+        self.assertTrue(any("unknown" in e for e in problems(profile=dict(PROFILE, nickname="x"))))
+        self.assertTrue(any("markup" in e for e in problems(profile=dict(PROFILE, bio="Jane Doe is Head of Things at Acme <b>now</b>"))))
+        self.assertTrue(any("line break" in e for e in problems(profile=dict(PROFILE, bio=PROFILE["bio"] + "\n"))))
+        self.assertTrue(any("longer than 150" in e for e in problems(profile=dict(PROFILE, headshot_alt="x" * 151))))
+        self.assertTrue(any("non-empty" in e for e in problems(profile=dict(PROFILE, headshot_alt=""))))
+
+    def test_job_title_and_employer_must_come_from_the_bio(self):
+        self.assertTrue(any("job_title" in e for e in problems(profile=dict(PROFILE, job_title="Chief Wizard"))))
+        self.assertTrue(any("employer" in e for e in problems(profile=dict(PROFILE, employer="Globex"))))
+
+    def test_headshot_metadata_is_reported(self):
+        for name, jpeg in (("EXIF", jpeg_with(b"\xff\xe1", b"Exif\x00\x00II*\x00")),
+                           ("XMP", jpeg_with(b"\xff\xe1", b"http://ns.adobe.com/xap/1.0/\x00<x/>")),
+                           ("IPTC", jpeg_with(b"\xff\xed", b"Photoshop 3.0\x00")),
+                           ("comment", jpeg_with(b"\xff\xfe", b"made with a camera"))):
+            errs = problems(headshot=jpeg)
+            self.assertTrue(any(f"carries {name}" in e for e in errs), name)
+
+    def test_a_colour_profile_alone_is_allowed(self):
+        self.assertEqual(problems(headshot=jpeg_with(b"\xff\xe2", b"ICC_PROFILE\x00\x01\x01")), [])
+
+
 # ---- output audit ---------------------------------------------------------------------------------
 
 PREVIEW_HEAD = '<meta name="robots" content="noindex,nofollow">'
@@ -154,11 +204,24 @@ def page(title, body="", head="", canonical=None):
     return f"<!doctype html><html lang=en><head><title>{title}</title>{head}{can}</head><body><main><h1>{title}</h1>{body}</main></body></html>"
 
 
-def make_dist(root, mode, leak=False, drop_noindex=False, drop_canonical=False, drop_record_page=False):
+def write_fragment(dist, text):
+    folder = dist / "pagefind/fragment"
+    folder.mkdir(parents=True, exist_ok=True)
+    payload = b"pagefind_dcd" + json.dumps({"url": "/", "content": text, "meta": {"title": "Home"}}).encode("utf8")
+    (folder / "en_abc123.pf_fragment").write_bytes(gzip.compress(payload))
+
+
+def make_dist(root, mode, leak=False, drop_noindex=False, drop_canonical=False, drop_record_page=False,
+              leak_in_index=False, no_fragments=False, bio=None, image=None):
     dist = Path(root) / "dist"
     (dist / "pagefind").mkdir(parents=True)
     (dist / "pagefind/pagefind.js").write_text("// index")
     (dist / "pagefind/pagefind-entry.json").write_text(json.dumps({"languages": {"en": {"page_count": 5}}}))
+    if not no_fragments:
+        write_fragment(dist, (bio or "Stephen Chin") + (" A talk" if leak_in_index else ""))
+    if image:
+        (dist / "_astro").mkdir()
+        (dist / "_astro" / image[0]).write_bytes(image[1])
     rss = '<?xml version="1.0"?><rss version="2.0"><channel><title>t</title>{items}</channel></rss>'
     if mode == "preview":
         head = "" if drop_noindex else PREVIEW_HEAD
@@ -175,7 +238,8 @@ def make_dist(root, mode, leak=False, drop_noindex=False, drop_canonical=False, 
         def can(path):
             return None if drop_canonical else f"https://stephenchin.com{path}"
         extra = "<p>A talk https://example.org/a</p>" if leak else ""
-        (dist / "index.html").write_text(page("Stephen Chin", '<a href="/work/">w</a>' + extra, "", can("/")))
+        bio_html = f"<p>{html.escape(bio)}</p>" if bio else ""
+        (dist / "index.html").write_text(page("Stephen Chin", '<a href="/work/">w</a>' + bio_html + extra, "", can("/")))
         (dist / "work").mkdir()
         (dist / "work/index.html").write_text(page("Work", "", "", can("/work/")))
         (dist / "404.html").write_text(page("Not found", "", '<meta name="robots" content="noindex">'))
@@ -186,14 +250,10 @@ def make_dist(root, mode, leak=False, drop_noindex=False, drop_canonical=False, 
     return dist
 
 
-def audit_output(mode, **kw):
+def audit_output(mode, profile=PROFILE, **kw):
     with tempfile.TemporaryDirectory() as tmp:
-        works, cands = {}, {}
-        if mode == "preview":
-            cands = {"a-talk": record()}
-        else:
-            cands = {"a-talk": record()}  # exists in the source but is unreviewed, so it must not be in the output
-        write_tree(tmp, works, cands)
+        # The unreviewed record exists in the source, so in production it must not be in the output.
+        write_tree(tmp, {}, {"a-talk": record()}, profile=profile)
         dist = make_dist(tmp, mode, **kw)
         return output.audit(mode, dist, tmp)
 
@@ -217,6 +277,34 @@ class OutputChecks(unittest.TestCase):
 
     def test_production_page_without_canonical_is_reported(self):
         self.assertTrue(any("canonical" in e for e in audit_output("production", drop_canonical=True)))
+
+    def test_a_hidden_title_in_the_search_index_is_reported(self):
+        errs = audit_output("production", leak_in_index=True)
+        self.assertTrue(any("leaks" in e for e in errs), errs)
+
+    def test_missing_search_fragments_are_reported(self):
+        self.assertTrue(any("no search fragments" in e for e in audit_output("production", no_fragments=True)))
+
+    def test_the_owner_bio_may_name_an_unpublished_work_but_nowhere_else(self):
+        named = dict(PROFILE, bio="Jane Doe is Head of Things at Acme and is writing A talk for fun.")
+        self.assertEqual(audit_output("production", profile=named, bio=named["bio"]), [])
+        errs = audit_output("production", profile=named, bio=named["bio"], leak=True)
+        self.assertTrue(any("leaks" in e for e in errs), errs)
+        errs = audit_output("production", profile=named, bio=named["bio"], leak_in_index=True)
+        self.assertTrue(any("leaks" in e for e in errs), errs)
+
+    def test_photo_metadata_in_the_output_is_reported(self):
+        exif_jpeg = jpeg_with(b"\xff\xe1", b"Exif\x00\x00II*\x00")
+        errs = audit_output("preview", image=("a.jpg", exif_jpeg))
+        self.assertTrue(any("a.jpg" in e and "EXIF" in e for e in errs), errs)
+        webp_exif = b"RIFF\x00\x00\x00\x00WEBPVP8 \x04\x00\x00\x00\x00\x00\x00\x00EXIF\x02\x00\x00\x00ab"
+        errs = audit_output("preview", image=("a.webp", webp_exif))
+        self.assertTrue(any("a.webp" in e and "EXIF" in e for e in errs), errs)
+
+    def test_clean_images_pass(self):
+        webp = b"RIFF\x00\x00\x00\x00WEBPVP8 \x04\x00\x00\x00\x00\x00\x00\x00"
+        self.assertEqual(audit_output("preview", image=("a.webp", webp)), [])
+        self.assertEqual(audit_output("preview", image=("a.jpg", CLEAN_JPEG)), [])
 
     def test_broken_internal_link_is_reported(self):
         with tempfile.TemporaryDirectory() as tmp:
