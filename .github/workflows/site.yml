@@ -23,6 +23,8 @@ jobs:
           persist-credentials: false
       - name: Self-tests for the checkers, with deliberately broken fixtures
         run: python3 -I tests/test_checks.py
+      - name: Self-tests for the backup and restore scripts
+        run: python3 -I tests/test_backup.py
       - name: Validate the catalog files
         run: python3 -I scripts/check_catalog.py
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
