@@ -1,0 +1,36 @@
+{
+  "title": "Connecting the Dots with Context Graphs",
+  "kind": "talk",
+  "topics": [
+    "ai",
+    "graphs",
+    "memory"
+  ],
+  "source_ids": [
+    "S14",
+    "S12"
+  ],
+  "url": "https://ai.engineer/talks/eW_vxrjvERk-connecting-dots-context-graphs",
+  "year": 2026,
+  "stephen_role": "speaker",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": "AI Engineer Europe 2026",
+  "platform_video_id": "eW_vxrjvERk",
+  "note": "Conference page read; playback untested.",
+  "dates": [
+    {
+      "value": "2026-05-16",
+      "type": "upload",
+      "source": "ai.engineer per-talk page, JSON-LD uploadDate and embedded video id"
+    }
+  ],
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Event date is not on the page; only the event label and the upload date. Keep the event date unknown.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

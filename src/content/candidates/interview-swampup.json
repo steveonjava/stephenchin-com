@@ -1,0 +1,32 @@
+{
+  "title": "swampUP interview on DevOps and GraphRAG",
+  "kind": "interview",
+  "topics": [
+    "ai",
+    "devops",
+    "graphrag"
+  ],
+  "source_ids": [
+    "S22",
+    "S20"
+  ],
+  "url": "https://www.techstrong.tv/videos/jfrog-swampup-2025/optimizing-devops-pipelines-with-rag-and-graphrag-ai-retrieval-models-with-stephen-chin-swampup-2025",
+  "year": 2025,
+  "stephen_role": "interviewee",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "date": {
+    "value": "2025-09-15",
+    "type": "guest_index_publication"
+  },
+  "page_title_observed": "Optimizing DevOps Pipelines with RAG and GraphRAG AI Retrieval Models with Stephen Chin | swampUP 2025 - Techstrong TV",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Seed title is a descriptive placeholder; the publisher title is recorded verbatim in page_title_observed for the editor to choose.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

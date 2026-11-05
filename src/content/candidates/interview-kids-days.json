@@ -1,0 +1,32 @@
+{
+  "title": "CNCF Kids Days interview",
+  "kind": "interview",
+  "topics": [
+    "education",
+    "cloud-native"
+  ],
+  "source_ids": [
+    "S23",
+    "S20"
+  ],
+  "url": "https://www.techstrong.tv/videos/interviews/stephen-chin-cassandra-chin-cncf-kids-days",
+  "year": 2024,
+  "stephen_role": "co-interviewee",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "With Cassandra Chin. Include only relevant professional content and reviewed images.",
+  "date": {
+    "value": "2024-01-18",
+    "type": "guest_index_publication"
+  },
+  "page_title_observed": "Stephen Chin and Cassandra Chin Lead CNCF's Kids Days - Techstrong TV",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Seed title is a descriptive placeholder; the publisher title is recorded verbatim in page_title_observed for the editor to choose.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

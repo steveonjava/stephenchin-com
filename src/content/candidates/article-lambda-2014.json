@@ -1,0 +1,23 @@
+{
+  "title": "Mary Had a Little Lambda",
+  "kind": "article",
+  "topics": [
+    "java",
+    "javafx",
+    "education"
+  ],
+  "source_ids": [
+    "S04"
+  ],
+  "url": "https://www.oracle.com/technical-resources/articles/java/rich-client-lambdas.html",
+  "year": 2014,
+  "stephen_role": "author",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "date": {
+    "value": "2014-05",
+    "type": "publication"
+  }
+}

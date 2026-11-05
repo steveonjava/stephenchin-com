@@ -1,0 +1,27 @@
+{
+  "title": "DevOps Tools for Java Developers",
+  "kind": "talk",
+  "topics": [
+    "devops",
+    "java"
+  ],
+  "source_ids": [
+    "S09"
+  ],
+  "url": "https://devnexus.com/archive/devnexus2021/presentations/6077/",
+  "year": 2021,
+  "stephen_role": "speaker",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": "Devnexus 2021",
+  "platform_video_id": "kyXFn1lhTF8",
+  "note": "Official session links recording; playback untested.",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "No event date on the Devnexus page. The video id kyXFn1lhTF8 appears on the page; playback untested.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

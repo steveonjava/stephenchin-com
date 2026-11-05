@@ -1,0 +1,31 @@
+{
+  "title": "Raspberry Pi with Java",
+  "kind": "book",
+  "topics": [
+    "embedded",
+    "raspberry-pi",
+    "java"
+  ],
+  "source_ids": [
+    "S07"
+  ],
+  "url": "https://www.oreilly.com/library/view/raspberry-pi-with/9780071842020/",
+  "year": 2015,
+  "stephen_role": "co-author",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "With James Weaver; publisher McGraw-Hill, hosted in OReilly catalog.",
+  "date": {
+    "value": "2015-10",
+    "type": "publisher_publication"
+  },
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "O'Reilly returned 403 to the fetcher and a paywall to the extractor on 2026-10-30; the date and authorship stay as the brief recorded them and could not be re-verified.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

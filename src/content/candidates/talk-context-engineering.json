@@ -1,0 +1,51 @@
+{
+  "title": "Context Engineering: Connecting the Dots with Graphs",
+  "kind": "talk",
+  "topics": [
+    "ai",
+    "graphs",
+    "context-engineering"
+  ],
+  "source_ids": [
+    "S12"
+  ],
+  "url": "https://ai.engineer/talks/LLuKshphGOE-context-engineering-connecting-dots-graphs",
+  "year": 2025,
+  "stephen_role": "speaker",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": "AI Engineer Code 2025",
+  "note": "Actual video URL requires source-page resolution; no video ID assigned.",
+  "dates": [
+    {
+      "value": "2025-11-24",
+      "type": "upload",
+      "source": "ai.engineer per-talk page, JSON-LD uploadDate and embedded video id"
+    }
+  ],
+  "audit": [
+    {
+      "kind": "fix",
+      "field": "url",
+      "from": "https://ai.engineer/speakers/stephen-chin",
+      "to": "https://ai.engineer/talks/LLuKshphGOE-context-engineering-connecting-dots-graphs",
+      "evidence": "speaker index page links this per-talk page; ai.engineer per-talk page, JSON-LD uploadDate and embedded video id",
+      "checked": "2026-10-30"
+    },
+    {
+      "kind": "fix",
+      "field": "platform_video_id",
+      "from": null,
+      "to": "LLuKshphGOE",
+      "evidence": "ai.engineer per-talk page, JSON-LD uploadDate and embedded video id (id matches the page embed; playback untested)",
+      "checked": "2026-10-30"
+    },
+    {
+      "kind": "flag",
+      "text": "Event date is not on the page; only the event label and the upload date. Keep the event date unknown.",
+      "checked": "2026-10-30"
+    }
+  ],
+  "platform_video_id": "LLuKshphGOE"
+}

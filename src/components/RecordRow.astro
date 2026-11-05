@@ -1,0 +1,24 @@
+---
+import { kindLabel, rowDate, roleLabel, workDate, type Rec } from '../lib/catalog';
+import { topicLabels } from '../lib/records';
+
+interface Props { rec: Rec; level?: 2 | 3 }
+const { rec, level = 2 } = Astro.props;
+const Heading = `h${level}`;
+const d = rec.data;
+const w = workDate(d);
+const year = w ? w.value.slice(0, 4) : d.year ? String(d.year) : 'unknown';
+const role = roleLabel(d.stephen_role);
+---
+<li class="record" data-kind={d.kind} data-kind-label={kindLabel(d.kind)} data-year={year} data-role={d.stephen_role ?? 'none'} data-role-label={role ?? ''} data-topics={d.topics.join(' ')}>
+  <Heading><a href={`/work/${rec.id}/`}>{d.title}</a></Heading>
+  <p class="meta">
+    <span>{kindLabel(d.kind)}</span>
+    <span>{rowDate(d)}</span>
+    {role && <span>{role}</span>}
+    {d.event && <span>{d.event}</span>}
+  </p>
+  <ul class="chips" aria-label="Topics">
+    {d.topics.map((t) => <li><a href={`/topics/${t}/`}>{topicLabels[t] ?? t}</a></li>)}
+  </ul>
+</li>

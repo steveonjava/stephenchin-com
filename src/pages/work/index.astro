@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RecordList from '../../components/RecordList.astro';
+import { visibleRecords } from '../../lib/records';
+
+const recs = await visibleRecords();
+---
+<BaseLayout title="Work" description="Every talk, article, book and project in the catalog, newest first.">
+  <h1>Work</h1>
+  <p class="lede">Every item in the catalog, newest first. Filter by format, topic, year or role.</p>
+  <RecordList recs={recs} filterable />
+</BaseLayout>

@@ -1,0 +1,40 @@
+{
+  "title": "Container registry article",
+  "kind": "article",
+  "topics": [
+    "devops",
+    "containers"
+  ],
+  "source_ids": [
+    "S24"
+  ],
+  "url": "https://dev.to/jfrog/introducing-the-world-s-best-container-registry-again-55hh",
+  "year": 2019,
+  "stephen_role": "author",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Syndicated original is a recovery lead for old steveonjava.com posts.",
+  "date": {
+    "value": "2019-11-20",
+    "type": "indexed_publication"
+  },
+  "audit": [
+    {
+      "kind": "fix",
+      "field": "verification_status",
+      "from": "search_discovery_only",
+      "to": "source_page_read",
+      "evidence": "DEV public API: published_at 2019-11-20, user Stephen Chin, org JFrog, canonical_url http://steveonjava.com/introducing-the-worlds-best-container-registry-again/",
+      "checked": "2026-10-30"
+    }
+  ],
+  "relations": [
+    {
+      "type": "alternateVersion",
+      "target": "https://steveonjava.com/introducing-the-worlds-best-container-registry-again/",
+      "note": "Archive record 6672, dated 2019-11-20; same article"
+    }
+  ]
+}

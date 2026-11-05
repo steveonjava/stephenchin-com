@@ -1,0 +1,48 @@
+{
+  "title": "Anchoring Enterprise GenAI with Knowledge Graphs",
+  "kind": "talk",
+  "topics": [
+    "ai",
+    "graphs",
+    "enterprise"
+  ],
+  "source_ids": [
+    "S12"
+  ],
+  "url": "https://ai.engineer/talks/OpVkWc3YnFc-anchoring-enterprise-genai-knowledge-graphs",
+  "year": 2025,
+  "stephen_role": "co-presenter",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": "AI Engineer Summit 2025",
+  "platform_video_id": "OpVkWc3YnFc",
+  "note": "Co-presenter identity must be resolved on session page; video URL linked by conference archive.",
+  "dates": [
+    {
+      "value": "2025-04-07",
+      "type": "upload",
+      "source": "ai.engineer per-talk page, JSON-LD uploadDate and embedded video id"
+    }
+  ],
+  "audit": [
+    {
+      "kind": "fix",
+      "field": "url",
+      "from": "https://ai.engineer/speakers/stephen-chin",
+      "to": "https://ai.engineer/talks/OpVkWc3YnFc-anchoring-enterprise-genai-knowledge-graphs",
+      "evidence": "speaker index page links this per-talk page; ai.engineer per-talk page, JSON-LD uploadDate and embedded video id",
+      "checked": "2026-10-30"
+    },
+    {
+      "kind": "flag",
+      "text": "Talk page lists a second speaker (Jonathan Lowe, Pfizer), consistent with the co-presenter role.",
+      "checked": "2026-10-30"
+    },
+    {
+      "kind": "flag",
+      "text": "Event date is not on the page; only the event label and the upload date. Keep the event date unknown.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

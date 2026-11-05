@@ -1,0 +1,42 @@
+{
+  "title": "Practical GraphRAG: Making LLMs Smarter with Knowledge Graphs",
+  "kind": "talk",
+  "topics": [
+    "ai",
+    "graphrag"
+  ],
+  "source_ids": [
+    "S12"
+  ],
+  "url": "https://ai.engineer/talks/XNneh6-eyPg-practical-graphrag-making-llms-smarter-knowledge",
+  "year": 2025,
+  "stephen_role": "speaker",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": "AI Engineer Worlds Fair 2025",
+  "platform_video_id": "XNneh6-eyPg",
+  "note": "Discovered on conference speaker archive; verify co-presenters and metadata before publication.",
+  "dates": [
+    {
+      "value": "2025-07-22",
+      "type": "upload",
+      "source": "ai.engineer per-talk page, JSON-LD uploadDate and embedded video id"
+    }
+  ],
+  "audit": [
+    {
+      "kind": "fix",
+      "field": "url",
+      "from": "https://ai.engineer/speakers/stephen-chin",
+      "to": "https://ai.engineer/talks/XNneh6-eyPg-practical-graphrag-making-llms-smarter-knowledge",
+      "evidence": "speaker index page links this per-talk page; ai.engineer per-talk page, JSON-LD uploadDate and embedded video id",
+      "checked": "2026-10-30"
+    },
+    {
+      "kind": "flag",
+      "text": "Event date is not on the page; only the event label and the upload date. Keep the event date unknown.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

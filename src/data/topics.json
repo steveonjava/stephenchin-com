@@ -1,0 +1,20 @@
+[
+  { "id": "agents", "label": "Agents" },
+  { "id": "agile", "label": "Agile" },
+  { "id": "ai", "label": "AI" },
+  { "id": "cloud-native", "label": "Cloud native" },
+  { "id": "containers", "label": "Containers" },
+  { "id": "context-engineering", "label": "Context engineering" },
+  { "id": "devops", "label": "DevOps" },
+  { "id": "education", "label": "Education" },
+  { "id": "embedded", "label": "Embedded" },
+  { "id": "enterprise", "label": "Enterprise" },
+  { "id": "graphrag", "label": "GraphRAG", "aliases": ["Graph RAG"] },
+  { "id": "graphs", "label": "Graphs" },
+  { "id": "java", "label": "Java" },
+  { "id": "javafx", "label": "JavaFX", "aliases": ["Java FX"] },
+  { "id": "kubernetes", "label": "Kubernetes" },
+  { "id": "memory", "label": "Memory" },
+  { "id": "open-source", "label": "Open source" },
+  { "id": "raspberry-pi", "label": "Raspberry Pi" }
+]

@@ -1,0 +1,23 @@
+{
+  "title": "Retro Gaming with Lambdas",
+  "kind": "talk",
+  "topics": [
+    "java",
+    "javafx"
+  ],
+  "source_ids": [
+    "S05"
+  ],
+  "url": "https://www.infoq.com/presentations/java-8-lambda-game/",
+  "year": 2014,
+  "stephen_role": "speaker",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "InfoQ labels date Recorded at; preserve original label until event dates corroborated.",
+  "date": {
+    "value": "2014-10-09",
+    "type": "publisher_label_recorded_at"
+  }
+}

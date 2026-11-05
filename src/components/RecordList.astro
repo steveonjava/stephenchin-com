@@ -1,0 +1,28 @@
+---
+import RecordRow from './RecordRow.astro';
+import type { Rec } from '../lib/catalog';
+
+interface Props { recs: Rec[]; filterable?: boolean }
+const { recs, filterable = false } = Astro.props;
+---
+{recs.length === 0 ? <p class="empty">Nothing is listed here yet.</p> : (
+  <>
+    {filterable && (
+      <form class="filters" id="filters" hidden aria-label="Filter the list">
+        <label>Format<select name="kind"><option value="">All</option></select></label>
+        <label>Topic<select name="topic"><option value="">All</option></select></label>
+        <label>Year<select name="year"><option value="">All</option></select></label>
+        <label>Role<select name="role"><option value="">All</option></select></label>
+      </form>
+    )}
+    <p class="status" id="list-status" role="status" aria-live="polite"></p>
+    <ul class="records" id="records">
+      {recs.map((rec) => <RecordRow rec={rec} />)}
+    </ul>
+    <p class="empty" id="list-empty" hidden>No records match these filters.</p>
+  </>
+)}
+
+<script>
+  import '../scripts/filters.js';
+</script>

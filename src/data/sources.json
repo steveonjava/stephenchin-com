@@ -1,0 +1,398 @@
+[
+  {
+    "id": "S01",
+    "title": "Stephen Chin public speaker profile",
+    "url": "https://sessionize.com/steveonjava/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S02",
+    "title": "Stephen Chin GitHub profile",
+    "url": "https://github.com/steveonjava",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S03",
+    "title": "InfoQ interview on WidgetFX and JFXtras",
+    "url": "https://www.infoq.com/news/2009/01/widgetfx/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S04",
+    "title": "Mary Had a Little Lambda",
+    "url": "https://www.oracle.com/technical-resources/articles/java/rich-client-lambdas.html",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S05",
+    "title": "Retro Gaming with Lambdas",
+    "url": "https://www.infoq.com/presentations/java-8-lambda-game/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S06",
+    "title": "BYO Java RetroPi Console",
+    "url": "https://vimeo.com/138954118",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": "JavaZone page read; playback and exact event date not tested."
+  },
+  {
+    "id": "S07",
+    "title": "Raspberry Pi with Java publisher metadata",
+    "url": "https://www.oreilly.com/library/view/raspberry-pi-with/9780071842020/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S08",
+    "title": "DevOps Tools for Java Developers publisher metadata",
+    "url": "https://www.oreilly.com/library/view/devops-tools-for/9781492084013/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S09",
+    "title": "Devnexus 2021 session and recording link",
+    "url": "https://devnexus.com/archive/devnexus2021/presentations/6077/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S10",
+    "title": "JFrog author archive",
+    "url": "https://jfrog.com/blog-author/stephen-chin/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S11",
+    "title": "The New Stack Kubernetes article",
+    "url": "https://thenewstack.io/10-kubernetes-best-practices-in-devops-without-chatgpt/",
+    "source_kind": "publisher",
+    "verification_status": "search_discovery_only",
+    "checked_date": "2026-10-21",
+    "note": "Search indexed title, byline and date; full fetch of author archive returned 403. Revalidate before publication."
+  },
+  {
+    "id": "S12",
+    "title": "AI Engineer speaker archive",
+    "url": "https://ai.engineer/speakers/stephen-chin",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": "Six talk links and related projects; use primary talk pages for facts and verify playback separately."
+  },
+  {
+    "id": "S13",
+    "title": "AI Engineer agentic GraphRAG talk",
+    "url": "https://ai.engineer/talks/AvVoJBxgSQk-agentic-graphrag-ais-logical-edge",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S14",
+    "title": "AI Engineer context graphs talk",
+    "url": "https://ai.engineer/talks/eW_vxrjvERk-connecting-dots-context-graphs",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S15",
+    "title": "AI Engineer CrabRAG talk",
+    "url": "https://ai.engineer/talks/Q0VkgCyNVUg-crabrag-why-automated-assistants-need-graph-memory",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S16",
+    "title": "GraphRAG publisher listing",
+    "url": "https://www.oreilly.com/library/view/graphrag-the-definitive/9798341630147/",
+    "source_kind": "publisher",
+    "verification_status": "search_discovery_only",
+    "checked_date": "2026-10-21",
+    "note": "Publisher listing advertises January 2027; do not label final edition published as of the research date."
+  },
+  {
+    "id": "S17",
+    "title": "Neo4j GraphRAG early release",
+    "url": "https://neo4j.com/books/oreilly-graphrag-definitive-guide/",
+    "source_kind": "publisher",
+    "verification_status": "search_discovery_only",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S18",
+    "title": "AI First Programming website",
+    "url": "https://aifirstprogramming.com/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S19",
+    "title": "CNCF Kids Day report",
+    "url": "https://www.cncf.io/blog/2023/03/22/cloud-native-youth-encouraging-the-next-generation-of-technologies-with-kids-day/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S20",
+    "title": "Techstrong guest archive",
+    "url": "https://www.techstrong.tv/guests/stephen-chin",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S21",
+    "title": "Techstrong interview on graph memory",
+    "url": "https://www.techstrong.tv/videos/interviews/graph-memory-for-llms-neo4j-stephen-chin",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S22",
+    "title": "Techstrong swampUP 2025 interview",
+    "url": "https://www.techstrong.tv/videos/jfrog-swampup-2025/optimizing-devops-pipelines-with-rag-and-graphrag-ai-retrieval-models-with-stephen-chin-swampup-2025",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S23",
+    "title": "Techstrong Kids Days interview",
+    "url": "https://www.techstrong.tv/videos/interviews/stephen-chin-cassandra-chin-cncf-kids-days",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S24",
+    "title": "2019 container registry article on DEV",
+    "url": "https://dev.to/jfrog/introducing-the-world-s-best-container-registry-again-55hh",
+    "source_kind": "author_publication",
+    "verification_status": "search_discovery_only",
+    "checked_date": "2026-10-21",
+    "note": "Indexed page says originally published at steveonjava.com; useful recovery lead, not permission to republish."
+  },
+  {
+    "id": "S25",
+    "title": "Reformulating the Product Delivery Process",
+    "url": "https://www.infoq.com/presentations/New-Product-Delivery-Process/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S26",
+    "title": "Legacy personal domain",
+    "url": "https://steveonjava.com/",
+    "source_kind": "domain_observation",
+    "verification_status": "retrieval_blocked",
+    "checked_date": "2026-10-21",
+    "note": "Research browser could not retrieve apex or www. Ownership, availability and actual failure cause remain unverified."
+  },
+  {
+    "id": "S27",
+    "title": "Legacy NightHacking domain",
+    "url": "https://nighthacking.com/",
+    "source_kind": "domain_observation",
+    "verification_status": "unexpected_content",
+    "checked_date": "2026-10-21",
+    "note": "HTTPS and HTTP entry checks returned an unrelated storefront. Do not infer expired ownership or compromise, and do not treat present content as Stephen Chin material."
+  },
+  {
+    "id": "S28",
+    "title": "GitHub Pages usage limits",
+    "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S29",
+    "title": "Astro content collections",
+    "url": "https://docs.astro.build/en/guides/content-collections/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S30",
+    "title": "Astro deployment to GitHub Pages",
+    "url": "https://docs.astro.build/en/guides/deploy/github/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S31",
+    "title": "Pagefind static search",
+    "url": "https://pagefind.app/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S32",
+    "title": "GitHub custom domain configuration",
+    "url": "https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S33",
+    "title": "GitHub custom domain verification",
+    "url": "https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S34",
+    "title": "GitHub Pages HTTPS",
+    "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S35",
+    "title": "Astro routing and static redirects",
+    "url": "https://docs.astro.build/en/guides/routing/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S36",
+    "title": "Cloudflare Bulk Redirects",
+    "url": "https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S37",
+    "title": "GitHub scheduled workflow behavior",
+    "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S38",
+    "title": "YouTube channel resource",
+    "url": "https://developers.google.com/youtube/data/reference/rest/v3/channels",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S39",
+    "title": "YouTube video metadata endpoint",
+    "url": "https://developers.google.com/youtube/data/reference/rest/v3/videos/list",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S40",
+    "title": "YouTube caption download permissions",
+    "url": "https://developers.google.com/youtube/data/reference/rest/v3/captions/download",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S41",
+    "title": "YouTube developer policies",
+    "url": "https://developers.google.com/youtube/terms/developer-policies",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S42",
+    "title": "Google profile structured data",
+    "url": "https://developers.google.com/search/docs/appearance/structured-data/profile-page",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S43",
+    "title": "GraphRAG companion repository",
+    "url": "https://github.com/graphrag/graphrag-the-definitive-guide-code",
+    "source_kind": "author_project",
+    "verification_status": "search_discovery_only",
+    "checked_date": "2026-10-21",
+    "note": ""
+  },
+  {
+    "id": "S44",
+    "title": "Cloudflare Single Redirects",
+    "url": "https://developers.cloudflare.com/rules/url-forwarding/single-redirects/",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-10-21",
+    "note": ""
+  }
+]

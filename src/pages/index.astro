@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RecordRow from '../components/RecordRow.astro';
+import { featured, topicCounts } from '../lib/catalog';
+import { topicLabels, visibleRecords } from '../lib/records';
+import { GITHUB_URL, IS_PREVIEW, SITE_NAME, SITE_URL } from '../site';
+
+const recs = await visibleRecords();
+const picks = featured(recs);
+const recent = recs.slice(0, 6);
+const counts = topicCounts(recs);
+const themes = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8);
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE_URL}/#person`,
+  name: SITE_NAME,
+  alternateName: 'steveonjava',
+  url: `${SITE_URL}/`,
+  sameAs: [GITHUB_URL],
+};
+---
+<BaseLayout description="Talks, writing, books and projects by Stephen Chin, also known as steveonjava." jsonLd={person} indexed>
+  <h1>Stephen Chin</h1>
+  <p class="handle">Also known as steveonjava</p>
+  <p class="lede">A catalog of talks, writing, books and projects, with the history behind them.</p>
+  <p><a href="/work/">Browse all work</a> or <a href="/search/">search the catalog</a>.</p>
+
+  <div data-pagefind-ignore>
+
+  {picks.length > 0 && (
+    <section aria-labelledby="selected">
+      <h2 id="selected">Selected work</h2>
+      <ul class="records">{picks.map((rec) => <RecordRow rec={rec} level={3} />)}</ul>
+    </section>
+  )}
+  {IS_PREVIEW && picks.length === 0 && (
+    <aside class="review"><h2>Review note</h2><p>Selected work is empty. It needs three featured items chosen by the owner.</p></aside>
+  )}
+
+  {recent.length > 0 && (
+    <section aria-labelledby="recent">
+      <h2 id="recent">Latest in the catalog</h2>
+      <ul class="records">{recent.map((rec) => <RecordRow rec={rec} level={3} />)}</ul>
+    </section>
+  )}
+
+  {themes.length > 0 && (
+    <section aria-labelledby="themes">
+      <h2 id="themes">Topics</h2>
+      <ul class="chips">{themes.map(([id]) => <li><a href={`/topics/${id}/`}>{topicLabels[id] ?? id}</a></li>)}</ul>
+      <p><a href="/topics/">All topics</a></p>
+    </section>
+  )}
+
+  <section aria-labelledby="archives">
+    <h2 id="archives">Earlier sites</h2>
+    <ul>
+      <li><a href="https://steveonjava.com/">SteveOnJava</a>, the blog archive, 2008 to 2019</li>
+      <li><a href="https://nighthacking.tv/">NightHacking</a>, the video and interview archive, 2013 to 2017</li>
+    </ul>
+  </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,31 @@
+{
+  "title": "CNCF Kids Day report",
+  "kind": "community",
+  "topics": [
+    "education",
+    "cloud-native"
+  ],
+  "source_ids": [
+    "S19"
+  ],
+  "url": "https://www.cncf.io/blog/2023/03/22/cloud-native-youth-encouraging-the-next-generation-of-technologies-with-kids-day/",
+  "year": 2023,
+  "stephen_role": "named-instructor",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Do not infer sole authorship or organizer status from instructor acknowledgment.",
+  "date": {
+    "value": "2023-03-22",
+    "type": "publication"
+  },
+  "page_title_observed": "Cloud native youth: encouraging the next generation of technologies with Kid's Day | CNCF",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Seed title is a descriptive placeholder; the publisher title is recorded verbatim in page_title_observed for the editor to choose.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

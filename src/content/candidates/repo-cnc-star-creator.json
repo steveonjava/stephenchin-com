@@ -1,0 +1,32 @@
+{
+  "title": "cnc-star-creator",
+  "kind": "code",
+  "topics": [
+    "embedded",
+    "java"
+  ],
+  "source_ids": [
+    "S02"
+  ],
+  "url": "https://github.com/steveonjava/cnc-star-creator",
+  "year": null,
+  "stephen_role": "repository-owner",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Listed on public profile. Inspect repository, license and maintainership history before publication; no maintained-status claim.",
+  "dates": [
+    {
+      "value": "2016-08-03",
+      "type": "repository_created",
+      "source": "GitHub API repos/steveonjava/cnc-star-creator, read 2026-10-30"
+    },
+    {
+      "value": "2016-09-28",
+      "type": "repository_last_push",
+      "source": "GitHub API repos/steveonjava/cnc-star-creator, read 2026-10-30"
+    }
+  ],
+  "license_observed": "MIT"
+}

@@ -72,7 +72,7 @@ def main():
     if css.is_file() and re.search(r"url\s*\(|@import|expression\s*\(", css.read_text(encoding="utf-8"), re.I):
         errors.append("style.css: external resource or active expression")
     for path in ROOT.rglob("*"):
-        if ".git" in path.parts:
+        if {".git", "node_modules", ".astro", "dist", "dist-preview", "dist-production"} & set(path.relative_to(ROOT).parts):
             continue
         if path.is_symlink():
             errors.append(f"{path.relative_to(ROOT)}: symlink")
