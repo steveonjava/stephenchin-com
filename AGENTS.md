@@ -13,7 +13,8 @@
 - Never write a missing month or day as `01`. A repository's creation date is not the date of the work.
 - Seeds are candidates. A page that was fetched does not prove a video plays, a rights holder agreed, or that Stephen wrote what he is credited with.
 - Write summaries in the owner's voice only from his own words. Do not invent a quote, a date, a provider id, or a first-person claim.
-- Public professional sources only. No private messages, internal planning, or unpublished book text. Family details appear only where the owner put them in his own approved bio.
+- Public professional sources only. No private messages, internal planning, or unpublished book text.
+- No family details, with one standing exception. Cassandra Chin, the owner's daughter, runs kids' workshops and has a public profile. She may be named, and her public professional activity (workshops, talks, interviews, writing, code) may be catalogued and linked without asking for approval item by item. Take every fact from her public profile or other public sources, never from assistant memory or private conversation. The exception covers her public professional work only. It does not extend to other family members, who appear only where the owner put them in his own approved bio, and it does not cover personal details such as age, school, home or whereabouts. Photographs of her follow the same rights and review rules as any other image.
 - Do not place photographs of private individuals.
 
 ## Promotion
