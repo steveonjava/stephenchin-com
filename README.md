@@ -11,6 +11,8 @@ Source for stephenchin.com. Today the published site is a single placeholder pag
 - `src/data/topics.json`, `src/data/sources.json`: topic labels and aliases, and the source ledger.
 - `src/data/profile.json`, `src/assets/headshot.jpg`: the owner's biography, word for word, and his portrait with its metadata stripped. `check_catalog.py` fails if the portrait carries EXIF, XMP or IPTC, because Git history is public and permanent.
 - `scripts/`: `check_catalog.py` (catalog rules), `check_output.py` (audit of a built folder), `check_lighthouse.mjs` (score budget), `check.py` (placeholder pages).
+- `scripts/make_backup.py`, `verify_backup.py`, `ruleset_body.py`: make a backup of the three repositories, prove it restores, and rebuild a ruleset from it. `docs/BACKUP-AND-RESTORE.md` is the runbook.
+- `ops/`: read-only checks for the domains and the retired steveonjava.com subdomain redirects, the redirect rules and the 22 old URLs they must cover.
 - `tests/`: self-tests for the checkers, unit tests for the date and sort helpers, and Playwright tests.
 
 ## Two builds

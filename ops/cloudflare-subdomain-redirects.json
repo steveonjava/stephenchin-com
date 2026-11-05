@@ -1,0 +1,67 @@
+{
+  "name": "steveonjava.com retired category subdomains",
+  "kind": "zone",
+  "phase": "http_request_dynamic_redirect",
+  "rules": [
+    {
+      "ref": "soj_sub_javafx_root",
+      "description": "javafx.steveonjava.com root goes to the javafx category page",
+      "expression": "(http.host eq \"javafx.steveonjava.com\" and http.request.uri.path eq \"/\")",
+      "action": "redirect",
+      "action_parameters": {
+        "from_value": {
+          "target_url": {
+            "value": "https://steveonjava.com/category/javafx/"
+          },
+          "status_code": 301,
+          "preserve_query_string": false
+        }
+      }
+    },
+    {
+      "ref": "soj_sub_flash_root",
+      "description": "flash.steveonjava.com root goes to the flash category page",
+      "expression": "(http.host eq \"flash.steveonjava.com\" and http.request.uri.path eq \"/\")",
+      "action": "redirect",
+      "action_parameters": {
+        "from_value": {
+          "target_url": {
+            "value": "https://steveonjava.com/category/flash/"
+          },
+          "status_code": 301,
+          "preserve_query_string": false
+        }
+      }
+    },
+    {
+      "ref": "soj_sub_agile_root",
+      "description": "agile.steveonjava.com root goes to the agile category page",
+      "expression": "(http.host eq \"agile.steveonjava.com\" and http.request.uri.path eq \"/\")",
+      "action": "redirect",
+      "action_parameters": {
+        "from_value": {
+          "target_url": {
+            "value": "https://steveonjava.com/category/agile/"
+          },
+          "status_code": 301,
+          "preserve_query_string": false
+        }
+      }
+    },
+    {
+      "ref": "soj_sub_path_passthrough",
+      "description": "any other path on the three retired category hosts keeps its path and query on the apex",
+      "expression": "http.host in {\"javafx.steveonjava.com\" \"flash.steveonjava.com\" \"agile.steveonjava.com\"}",
+      "action": "redirect",
+      "action_parameters": {
+        "from_value": {
+          "target_url": {
+            "expression": "concat(\"https://steveonjava.com\", http.request.uri.path)"
+          },
+          "status_code": 301,
+          "preserve_query_string": true
+        }
+      }
+    }
+  ]
+}
