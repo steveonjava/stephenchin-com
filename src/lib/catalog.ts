@@ -122,9 +122,10 @@ export function kindLabel(kind: string): string {
   return KINDS[kind] ?? kind;
 }
 
+// "co-author" keeps its hyphen; other roles read as plain words ("repository-owner" becomes "Repository owner").
 export function roleLabel(role: string | null): string | null {
   if (!role) return null;
-  const text = role.replace(/-/g, ' ');
+  const text = role.replace(/^co-/, 'co\u0000').replace(/-/g, ' ').replace('\u0000', '-');
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
@@ -153,4 +154,9 @@ export function featured(recs: Rec[], max = 3): Rec[] {
     .filter((r) => typeof r.data.featured_rank === 'number')
     .sort((a, b) => (a.data.featured_rank as number) - (b.data.featured_rank as number))
     .slice(0, max);
+}
+
+// The newest items that have a date for the work itself. A planned release or an undated record is not "latest".
+export function latest(recs: Rec[], max = 6): Rec[] {
+  return recs.filter((r) => workDate(r.data) !== null).slice(0, max);
 }

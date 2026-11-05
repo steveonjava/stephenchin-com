@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { byKinds, dateTypeLabel, featured, formatDate, kindLabel, precision, roleLabel, rowDate, sortKey, sortRecords, sourceDisplay, topicCounts, workDate } from '../../src/lib/catalog.ts';
+import { byKinds, dateTypeLabel, featured, formatDate, kindLabel, latest, precision, roleLabel, rowDate, sortKey, sortRecords, sourceDisplay, topicCounts, workDate } from '../../src/lib/catalog.ts';
 
 const rec = (id, data) => ({ id, origin: 'candidates', data: { title: id, kind: 'talk', topics: ['java'], year: null, stephen_role: null, review_status: 'candidate', event: null, ...data } });
 
@@ -56,7 +56,10 @@ test('a month-only date sorts before a day in the same month', () => {
 test('labels', () => {
   assert.equal(kindLabel('talk'), 'Talk');
   assert.equal(kindLabel('unheard-of'), 'unheard-of');
-  assert.equal(roleLabel('co-author'), 'Co author');
+  assert.equal(roleLabel('co-author'), 'Co-author');
+  assert.equal(roleLabel('co-presenter'), 'Co-presenter');
+  assert.equal(roleLabel('repository-owner'), 'Repository owner');
+  assert.equal(roleLabel('speaker'), 'Speaker');
   assert.equal(roleLabel(null), null);
   assert.equal(dateTypeLabel('repository_created'), 'Repository created');
   assert.equal(dateTypeLabel('something_new'), 'something new');
@@ -73,4 +76,17 @@ test('byKinds, topicCounts and featured', () => {
   assert.deepEqual([...topicCounts(list)], [['java', 3], ['ai', 1]]);
   assert.deepEqual(featured(list).map((r) => r.id), ['b', 't']);
   assert.equal(featured(list, 1).length, 1);
+});
+
+test('latest skips planned releases and undated records, and keeps the newest first', () => {
+  const list = sortRecords([
+    rec('planned-book', { kind: 'book', year: null, dates: [{ value: '2027-01', type: 'planned_publication' }] }),
+    rec('talk-2026', { year: 2026, date: { value: '2026-07-22', type: 'upload' } }),
+    rec('undated-project', { kind: 'project' }),
+    rec('repo', { kind: 'code', year: null, dates: [{ value: '2015-03-22', type: 'repository_created' }] }),
+    rec('talk-2025', { year: 2025, date: { value: '2025-07-21', type: 'upload' } }),
+  ]);
+  assert.equal(list[0].id, 'planned-book');
+  assert.deepEqual(latest(list).map((r) => r.id), ['talk-2026', 'talk-2025']);
+  assert.equal(latest(list, 1).length, 1);
 });

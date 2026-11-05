@@ -1,13 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RecordRow from '../components/RecordRow.astro';
-import { featured, topicCounts } from '../lib/catalog';
+import { featured, latest, topicCounts } from '../lib/catalog';
 import { topicLabels, visibleRecords } from '../lib/records';
 import { GITHUB_URL, IS_PREVIEW, SITE_NAME, SITE_URL } from '../site';
 
 const recs = await visibleRecords();
 const picks = featured(recs);
-const recent = recs.slice(0, 6);
+const recent = latest(recs);
 const counts = topicCounts(recs);
 const themes = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8);
 const person = {
