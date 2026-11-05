@@ -1,0 +1,52 @@
+{
+  "title": "GraphRAG companion code",
+  "kind": "code",
+  "topics": [
+    "ai",
+    "graphrag"
+  ],
+  "source_ids": [
+    "S43"
+  ],
+  "url": "https://github.com/graphrag/graphrag-the-definitive-guide-code",
+  "year": null,
+  "stephen_role": "co-author",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Search discovery only. Inspect repository license and authorship before approval.",
+  "dates": [
+    {
+      "value": "2026-08-23",
+      "type": "repository_created",
+      "source": "GitHub API repos/graphrag/graphrag-the-definitive-guide-code, read 2026-10-30"
+    },
+    {
+      "value": "2026-09-14",
+      "type": "repository_last_push",
+      "source": "GitHub API repos/graphrag/graphrag-the-definitive-guide-code, read 2026-10-30"
+    }
+  ],
+  "license_observed": "none declared",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Owned by the graphrag organization, not by the account.",
+      "checked": "2026-10-30"
+    },
+    {
+      "kind": "flag",
+      "text": "No license is declared, so reuse cannot be assumed; keep link-only. The contributors API lists one login with 4 contributions. The README names the three book authors.",
+      "checked": "2026-10-30"
+    },
+    {
+      "kind": "fix",
+      "field": "verification_status",
+      "from": "search_discovery_only",
+      "to": "source_page_read",
+      "evidence": "GitHub API and README read 2026-10-30",
+      "checked": "2026-10-30"
+    }
+  ]
+}

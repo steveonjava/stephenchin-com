@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RecordList from '../../components/RecordList.astro';
+import { byKinds } from '../../lib/catalog';
+import { visibleRecords } from '../../lib/records';
+import { SECTIONS } from '../../site';
+
+export function getStaticPaths() {
+  return SECTIONS.map((section) => ({ params: { section: section.slug }, props: { section } }));
+}
+const { section } = Astro.props;
+const recs = byKinds(await visibleRecords(), section.kinds);
+---
+<BaseLayout title={section.title} description={`${section.title} by Stephen Chin, newest first.`}>
+  <h1>{section.title}</h1>
+  <RecordList recs={recs} />
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Search" description="Search the talks, writing, books and projects in the catalog.">
+  <h1>Search</h1>
+  <form class="search-form" id="search-form" role="search" aria-label="Search the catalog" hidden>
+    <label class="grow">Search the catalog<input type="search" id="q" name="q" autocomplete="off" spellcheck="false" /></label>
+    <label>Format<select name="kind"><option value="">All</option></select></label>
+    <label>Topic<select name="topic"><option value="">All</option></select></label>
+    <label>Year<select name="year"><option value="">All</option></select></label>
+    <button type="submit">Search</button>
+  </form>
+  <noscript><p>Search needs JavaScript. <a href="/work/">Browse the full list</a> instead.</p></noscript>
+  <p class="status" id="search-status" role="status" aria-live="polite"></p>
+  <ol class="records" id="results"></ol>
+  <p><button type="button" id="more" hidden>Show more</button></p>
+  <script>
+    import '../scripts/search.js';
+  </script>
+</BaseLayout>

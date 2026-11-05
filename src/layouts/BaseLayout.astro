@@ -1,0 +1,56 @@
+---
+import '../styles/site.css';
+import { GITHUB_URL, IS_PREVIEW, NAV, SITE_NAME, SITE_URL } from '../site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  jsonLd?: Record<string, unknown>;
+  indexed?: boolean;
+  noindex?: boolean;
+}
+const { title, description, jsonLd, indexed = false, noindex = false } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
+const pathname = Astro.url.pathname;
+const canonical = new URL(pathname, SITE_URL).href;
+const ld = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : null;
+const isCurrent = (href: string) => pathname === href || pathname.startsWith(href);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    {IS_PREVIEW ? <meta name="robots" content="noindex,nofollow" /> : noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="data:," />
+    <link rel="alternate" type="application/rss+xml" title={SITE_NAME} href="/rss.xml" />
+    {ld && <script is:inline type="application/ld+json" set:html={ld} />}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to the content</a>
+    {IS_PREVIEW && <p class="preview-banner" role="note">Preview build. Not indexed. Unreviewed candidate records are shown so they can be reviewed.</p>}
+    <header class="site-header">
+      <a class="site-name" href="/">{SITE_NAME}</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          {NAV.map((item) => (
+            <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+    <main id="main" tabindex="-1" data-pagefind-body={indexed ? '' : undefined}>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <ul>
+        <li><a href={GITHUB_URL}>GitHub</a></li>
+        <li><a href="https://steveonjava.com/">SteveOnJava archive</a></li>
+        <li><a href="https://nighthacking.tv/">NightHacking archive</a></li>
+        <li><a href="/rss.xml">RSS</a></li>
+      </ul>
+    </footer>
+  </body>
+</html>

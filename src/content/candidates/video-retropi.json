@@ -1,0 +1,27 @@
+{
+  "title": "BYO Java RetroPi Console",
+  "kind": "video",
+  "topics": [
+    "embedded",
+    "raspberry-pi",
+    "java"
+  ],
+  "source_ids": [
+    "S06"
+  ],
+  "url": "https://vimeo.com/138954118",
+  "year": null,
+  "stephen_role": "speaker",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": "JavaZone",
+  "note": "Exact event/upload date intentionally unset; title and description available, player untested.",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Vimeo not requested (no provider request authorized). Year and date stay unknown. Event: JavaZone.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

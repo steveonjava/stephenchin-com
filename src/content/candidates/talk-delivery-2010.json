@@ -1,0 +1,23 @@
+{
+  "title": "Reformulating the Product Delivery Process",
+  "kind": "talk",
+  "topics": [
+    "agile",
+    "devops"
+  ],
+  "source_ids": [
+    "S25"
+  ],
+  "url": "https://www.infoq.com/presentations/New-Product-Delivery-Process/",
+  "year": 2010,
+  "stephen_role": "co-presenter",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Retain publisher date label; confirm actual conference date. Co-presenters include Erik Huddleston and Israel Gat.",
+  "date": {
+    "value": "2010-09-02",
+    "type": "publisher_label_recorded_at"
+  }
+}

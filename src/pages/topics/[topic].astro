@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RecordList from '../../components/RecordList.astro';
+import topics from '../../data/topics.json';
+import { topicCounts } from '../../lib/catalog';
+import { visibleRecords } from '../../lib/records';
+
+export async function getStaticPaths() {
+  const recs = await visibleRecords();
+  const counts = topicCounts(recs);
+  return topics
+    .filter((t) => counts.has(t.id))
+    .map((topic) => ({
+      params: { topic: topic.id },
+      props: { topic, recs: recs.filter((r) => r.data.topics.includes(topic.id)) },
+    }));
+}
+const { topic, recs } = Astro.props;
+const aliases = 'aliases' in topic ? (topic.aliases as string[]) : [];
+---
+<BaseLayout title={topic.label} description={`Talks, writing, books and projects about ${topic.label}.`}>
+  <h1>{topic.label}</h1>
+  {aliases.length > 0 && <p class="lede">Also written as {aliases.join(', ')}.</p>}
+  <RecordList recs={recs} />
+  <p><a href="/topics/">All topics</a></p>
+</BaseLayout>

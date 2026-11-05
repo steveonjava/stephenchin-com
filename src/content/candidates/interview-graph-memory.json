@@ -1,0 +1,33 @@
+{
+  "title": "Graph memory interview",
+  "kind": "interview",
+  "topics": [
+    "ai",
+    "graphs",
+    "memory"
+  ],
+  "source_ids": [
+    "S21",
+    "S20"
+  ],
+  "url": "https://www.techstrong.tv/videos/interviews/graph-memory-for-llms-neo4j-stephen-chin",
+  "year": 2026,
+  "stephen_role": "interviewee",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Date from guest index; exact event date and playback untested.",
+  "date": {
+    "value": "2026-08-26",
+    "type": "guest_index_publication"
+  },
+  "page_title_observed": "Graph Memory for LLMs: Neo4j on the Enterprise AI Stack",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Seed title is a descriptive placeholder; the publisher title is recorded verbatim in page_title_observed for the editor to choose.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

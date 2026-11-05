@@ -1,0 +1,23 @@
+{
+  "title": "Stephen Chin on WidgetFX and JFXtras",
+  "kind": "interview",
+  "topics": [
+    "javafx",
+    "open-source"
+  ],
+  "source_ids": [
+    "S03"
+  ],
+  "url": "https://www.infoq.com/news/2009/01/widgetfx/",
+  "year": 2009,
+  "stephen_role": "interviewee",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "By Charles Humble; Stephen is the interviewee, not the article author.",
+  "date": {
+    "value": "2009-01-20",
+    "type": "publication"
+  }
+}

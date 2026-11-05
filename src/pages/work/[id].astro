@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allDates, dateTypeLabel, formatDate, kindLabel, precision, roleLabel, sourceDisplay, sourceHost, workDate } from '../../lib/catalog';
+import { topicAliases, topicLabels, visibleRecords } from '../../lib/records';
+import { IS_PREVIEW, SITE_URL } from '../../site';
+
+export async function getStaticPaths() {
+  const recs = await visibleRecords();
+  const visible = recs.map((r) => r.id);
+  return recs.map((rec) => ({ params: { id: rec.id }, props: { rec, visible } }));
+}
+
+const { rec, visible } = Astro.props;
+const d = rec.data;
+const w = workDate(d);
+const year = w ? w.value.slice(0, 4) : d.year ? String(d.year) : 'Unknown';
+const role = roleLabel(d.stephen_role);
+const dates = allDates(d);
+const aliases = topicAliases(d.topics);
+const related = (d.relations ?? []).flatMap((r) =>
+  (Array.isArray(r.target) ? r.target : [r.target]).filter((x) => visible.includes(x)).map((x) => ({ type: r.type, id: x })),
+);
+const verb = d.kind === 'talk' || d.kind === 'video' ? 'Watch at' : d.kind === 'code' ? 'View on' : d.kind === 'book' ? 'See the listing at' : 'Read at';
+
+const LD_TYPES = { article: 'Article', book: 'Book', code: 'SoftwareSourceCode' };
+const PUBLICATION = ['publication', 'publisher_publication'];
+const wrote = d.stephen_role === 'author' || d.stephen_role === 'co-author';
+const published = dates.find((x) => PUBLICATION.includes(x.type));
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': LD_TYPES[d.kind as keyof typeof LD_TYPES] ?? 'CreativeWork',
+  name: d.title,
+  url: `${SITE_URL}/work/${rec.id}/`,
+  sameAs: d.url,
+  ...(wrote ? { author: { '@id': `${SITE_URL}/#person` } } : {}),
+  ...(published ? { datePublished: published.value } : {}),
+};
+const description = d.summary ?? `${kindLabel(d.kind)}${d.event ? `, ${d.event}` : ''}.`;
+---
+<BaseLayout title={d.title} description={description} jsonLd={jsonLd} indexed>
+  <article data-pagefind-filter={`kind:${kindLabel(d.kind)}`}>
+    <p class="meta"><span>{kindLabel(d.kind)}</span>{role && <span>{role}</span>}</p>
+    <h1 data-pagefind-filter={`year:${year}`}>{d.title}</h1>
+    <p><a class="source-link" href={d.url} rel="noopener">{verb} {sourceHost(d.url)}</a></p>
+    {d.summary && <p class="prose">{d.summary}</p>}
+
+    <dl class="facts">
+      {role && (<><dt>Role</dt><dd>{role}</dd></>)}
+      {d.event && (<><dt>Event</dt><dd>{d.event}</dd></>)}
+      {dates.map((x) => (<><dt>{dateTypeLabel(x.type)}</dt><dd><time datetime={x.value}>{formatDate(x.value)}</time>{precision(x.value) === 'month' && ' (month only)'}{precision(x.value) === 'year' && ' (year only)'}</dd></>))}
+      {dates.length === 0 && (<><dt>Date</dt><dd>Not known</dd></>)}
+      <dt>Original</dt><dd>{sourceDisplay(d.url)}</dd>
+      <dt>Topics</dt>
+      <dd>
+        <ul class="chips">
+          {d.topics.map((t) => <li><a href={`/topics/${t}/`} data-pagefind-filter="topic">{topicLabels[t] ?? t}</a></li>)}
+        </ul>
+        {aliases.length > 0 && <p class="meta">Also written as {aliases.join(', ')}</p>}
+      </dd>
+    </dl>
+
+    {related.length > 0 && (
+      <section aria-labelledby="related">
+        <h2 id="related">Related</h2>
+        <ul>{related.map((x) => <li><a href={`/work/${x.id}/`}>{x.id}</a></li>)}</ul>
+      </section>
+    )}
+  </article>
+
+  {IS_PREVIEW && (
+    <aside class="review" data-pagefind-ignore>
+      <h2>Review notes</h2>
+      <p>Status: {d.review_status}. Rights: {d.rights_status}. Verification: {d.verification_status}. Record id: {rec.id}.</p>
+      {d.note && <p>Seed note: {d.note}</p>}
+      {d.page_title_observed && <p>Publisher title: {d.page_title_observed}</p>}
+      {d.platform_video_id && <p>Video id on the provider: {d.platform_video_id} (playback not tested).</p>}
+      {d.license_observed && <p>License seen on the repository: {d.license_observed}.</p>}
+      {(d.audit ?? []).length > 0 && (
+        <ul>
+          {(d.audit ?? []).map((a) => <li>{a.kind === 'flag' ? a.text : `Corrected ${a.field}. Evidence: ${a.evidence}`}</li>)}
+        </ul>
+      )}
+      {(d.relations ?? []).filter((r) => (Array.isArray(r.target) ? r.target : [r.target]).some((x) => !visible.includes(x))).map((r) => (
+        <p>{r.type}: {Array.isArray(r.target) ? r.target.join(', ') : r.target}{r.note ? `. ${r.note}` : ''}</p>
+      ))}
+    </aside>
+  )}
+</BaseLayout>

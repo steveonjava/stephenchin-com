@@ -1,0 +1,26 @@
+{
+  "title": "AI First Programming",
+  "kind": "project",
+  "topics": [
+    "ai",
+    "education"
+  ],
+  "source_ids": [
+    "S18"
+  ],
+  "url": "https://aifirstprogramming.com/",
+  "year": null,
+  "stephen_role": null,
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Public project site verified. Confirm public identity link, precise attribution and each title status before publishing.",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "The page names Stephen once. The brief requires two corroborating identity signals before approval.",
+      "checked": "2026-10-30"
+    }
+  ]
+}

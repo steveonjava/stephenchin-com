@@ -1,0 +1,136 @@
+name: Site preview
+# Builds the Astro site in CI only. Nothing here deploys: the published page is still the placeholder,
+# started by hand from pages.yml. The preview build is noindex and shows candidate records for review.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: site-preview-${{ github.ref }}
+  cancel-in-progress: true
+# Runner pin: the browser job installs Playwright with --with-deps, which supports only specific Ubuntu
+# releases. Move this pin together with a Playwright upgrade, not independently.
+jobs:
+  catalog:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # Pins: checkout v7.0.1, setup-node v7.1.0, upload-artifact v7.0.2, download-artifact v8.0.2.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Self-tests for the checkers, with deliberately broken fixtures
+        run: python3 -I tests/test_checks.py
+      - name: Validate the catalog files
+        run: python3 -I scripts/check_catalog.py
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .nvmrc
+      - name: Unit tests for the date, sort and label helpers
+        run: node --test "tests/unit/*.test.mjs"
+
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install the locked dependencies without running package scripts
+        run: npm ci --ignore-scripts
+      - name: Build the preview (noindex, candidates shown)
+        run: npm run build:preview
+      - name: Audit the preview output
+        run: python3 -I scripts/check_output.py preview dist-preview
+      - name: Build production (reviewed and published records only)
+        run: npm run build:production
+      - name: Audit the production output, including that no unreviewed record leaks into it
+        run: python3 -I scripts/check_output.py production dist-production
+      - name: Upload the preview for the browser job and for download
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: site-preview
+          path: dist-preview/
+          if-no-files-found: error
+          retention-days: 7
+
+  browser:
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Download the already built preview, not a rebuild
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: site-preview
+          path: dist-preview
+          digest-mismatch: error
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install the locked dependencies without running package scripts
+        run: npm ci --ignore-scripts
+      - name: Install the browser on the CI runner only
+        timeout-minutes: 8
+        run: npx playwright install --with-deps chromium
+      - name: Pages at 390 px and 1280 px (axe, overflow, keyboard, no-JavaScript, filters, search)
+        env:
+          SITE_DIR: dist-preview
+        run: npx playwright test
+      - name: Lighthouse on the key templates (mobile profile, lab budget)
+        run: |
+          set -eu
+          python3 -m http.server 4174 --bind 127.0.0.1 --directory dist-preview >/dev/null 2>&1 &
+          SERVER=$!
+          trap 'kill $SERVER' EXIT
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:4174/ >/dev/null && break; sleep 0.5; done
+          export CHROME_PATH="$(node --input-type=module -e "import { chromium } from 'playwright-core'; console.log(chromium.executablePath())")"
+          mkdir -p lighthouse
+          for pair in home:/ work:/work/ detail:/work/talk-crabrag/ topic:/topics/javafx/ search:/search/; do
+            name="${pair%%:*}"; path="${pair#*:}"
+            npx lighthouse "http://127.0.0.1:4174${path}" --chrome-flags="--headless=new --no-sandbox" \
+              --only-categories=performance,accessibility,best-practices --output=json --output-path="lighthouse/${name}.json" --quiet
+          done
+          node scripts/check_lighthouse.mjs lighthouse
+      - name: Upload screenshots, test results and Lighthouse reports even after failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: browser-evidence
+          path: |
+            screenshots/
+            test-results/
+            lighthouse/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  preview:
+    # Branch-protection context, matching the archive repositories. Never turn a skip into a pass.
+    name: preview
+    if: ${{ always() }}
+    needs: [catalog, build, browser]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Require every job to succeed
+        env:
+          CATALOG: ${{ needs.catalog.result }}
+          BUILD: ${{ needs.build.result }}
+          BROWSER: ${{ needs.browser.result }}
+        run: |
+          printf 'catalog=%s build=%s browser=%s\n' "$CATALOG" "$BUILD" "$BROWSER"
+          test "$CATALOG" = success
+          test "$BUILD" = success
+          test "$BROWSER" = success

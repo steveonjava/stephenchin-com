@@ -1,0 +1,48 @@
+{
+  "title": "LUGOD-Pi-Test",
+  "kind": "code",
+  "topics": [
+    "embedded",
+    "raspberry-pi"
+  ],
+  "source_ids": [
+    "S02"
+  ],
+  "url": "https://github.com/steveonjava/LUGOD-Pi-Test",
+  "year": null,
+  "stephen_role": "repository-owner",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Listed on public profile. Inspect repository, license and maintainership history before publication; no maintained-status claim.",
+  "dates": [
+    {
+      "value": "2012-12-18",
+      "type": "repository_created",
+      "source": "GitHub API repos/steveonjava/LUGOD-Pi-Test, read 2026-10-30"
+    },
+    {
+      "value": "2012-12-18",
+      "type": "repository_last_push",
+      "source": "GitHub API repos/steveonjava/LUGOD-Pi-Test, read 2026-10-30"
+    }
+  ],
+  "license_observed": "none declared",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Description: app done live during the December 2012 LUGOD meeting.",
+      "checked": "2026-10-30"
+    }
+  ],
+  "relations": [
+    {
+      "type": "relatedTo",
+      "target": [
+        "soj:2760"
+      ],
+      "note": "steveonjava.com archive records whose content contains this exact repository URL"
+    }
+  ]
+}

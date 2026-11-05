@@ -1,0 +1,33 @@
+{
+  "title": "10 Kubernetes Best Practices in DevOps without ChatGPT",
+  "kind": "article",
+  "topics": [
+    "devops",
+    "kubernetes"
+  ],
+  "source_ids": [
+    "S11"
+  ],
+  "url": "https://thenewstack.io/10-kubernetes-best-practices-in-devops-without-chatgpt/",
+  "year": 2023,
+  "stephen_role": "author",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Search discovery only; verify publisher page before approving facts.",
+  "date": {
+    "value": "2023-10-05",
+    "type": "indexed_publication"
+  },
+  "audit": [
+    {
+      "kind": "fix",
+      "field": "verification_status",
+      "from": "search_discovery_only",
+      "to": "source_page_read",
+      "evidence": "New Stack page: article:published_time 2023-10-05, meta author Stephen Chin, self canonical",
+      "checked": "2026-10-30"
+    }
+  ]
+}

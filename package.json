@@ -1,0 +1,28 @@
+{
+  "name": "stephenchin-com",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "build": "astro build && pagefind --site \"${OUT_DIR:-dist}\"",
+    "build:preview": "SITE_MODE=preview OUT_DIR=dist-preview npm run build",
+    "build:production": "SITE_MODE=production OUT_DIR=dist-production npm run build",
+    "check:catalog": "python3 scripts/check_catalog.py",
+    "test:unit": "node --test \"tests/unit/*.test.mjs\"",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.4.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "lighthouse": "13.6.0",
+    "pagefind": "1.6.0"
+  }
+}

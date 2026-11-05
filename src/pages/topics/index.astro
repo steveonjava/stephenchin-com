@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { topicCounts } from '../../lib/catalog';
+import { topicLabels, visibleRecords } from '../../lib/records';
+
+const counts = topicCounts(await visibleRecords());
+const list = [...counts].sort((a, b) => (topicLabels[a[0]] ?? a[0]).localeCompare(topicLabels[b[0]] ?? b[0], 'en'));
+---
+<BaseLayout title="Topics" description="The topics covered by the catalog.">
+  <h1>Topics</h1>
+  {list.length === 0 ? <p class="empty">Nothing is listed here yet.</p> : (
+    <ul class="topic-list">
+      {list.map(([id, n]) => (
+        <li><a href={`/topics/${id}/`}>{topicLabels[id] ?? id}</a> <span class="count">({n})</span></li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

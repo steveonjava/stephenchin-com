@@ -1,0 +1,39 @@
+{
+  "title": "GraphRAG: The Definitive Guide",
+  "kind": "book",
+  "topics": [
+    "ai",
+    "graphs",
+    "graphrag"
+  ],
+  "source_ids": [
+    "S16",
+    "S17",
+    "S43"
+  ],
+  "url": "https://www.oreilly.com/library/view/graphrag-the-definitive/9798341630147/",
+  "year": null,
+  "stephen_role": "co-author",
+  "review_status": "candidate",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only_until_review",
+  "event": null,
+  "note": "Early release available via Neo4j; publisher lists January 2027. Scheduled publication is not a completed milestone. With Michael Hunger and Jesus Barrasa.",
+  "audit": [
+    {
+      "kind": "fix",
+      "field": "verification_status",
+      "from": "search_discovery_only",
+      "to": "source_page_read",
+      "evidence": "O'Reilly listing (authors Chin, Hunger, Barrasa; January 2027; \"Brief Table of Contents (Not Yet Final)\") and Neo4j early-release page",
+      "checked": "2026-10-30"
+    }
+  ],
+  "dates": [
+    {
+      "value": "2027-01",
+      "type": "planned_publication",
+      "source": "O'Reilly listing says January 2027; scheduled is not published"
+    }
+  ]
+}
