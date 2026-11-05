@@ -98,11 +98,15 @@ test.describe('search', () => {
   });
   test('a format filter narrows a search', async ({ page }) => {
     await search(page, 'GraphRAG');
+    await expect(page.locator('#results .result').first()).toBeVisible();
     const all = await page.locator('#results .result').count();
+    // The status line still shows the previous count while the filtered search runs, so wait on the
+    // result list itself: it is emptied first, then refilled with the narrowed set.
     await page.selectOption('select[name=kind]', 'Talk');
-    await expect(page.locator('#search-status')).toContainText(/\d+ results?/);
+    await expect.poll(() => page.locator('#results .result').count(), { message: 'Talk results after filtering' }).toBeGreaterThan(0);
     const talks = await page.locator('#results .result').count();
-    expect(talks).toBeGreaterThan(0);
     expect(talks).toBeLessThan(all);
+    expect(new URL(page.url()).search).toContain('kind=Talk');
   });
+});
 });
