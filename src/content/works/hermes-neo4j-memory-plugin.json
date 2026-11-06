@@ -1,0 +1,44 @@
+{
+  "title": "hermes-neo4j-memory-plugin",
+  "kind": "code",
+  "topics": [
+    "agents",
+    "ai",
+    "graphs",
+    "memory",
+    "open-source"
+  ],
+  "source_ids": [
+    "S47"
+  ],
+  "url": "https://github.com/steveonjava/hermes-neo4j-memory-plugin",
+  "year": 2026,
+  "stephen_role": "author",
+  "review_status": "published",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only",
+  "event": null,
+  "note": "Chosen by the owner on 2026-11-06. No releases or tags exist, so there is no publication date. The year is 2026 because every commit is dated between 2026-05-21 and 2026-11-06. No maintained-status claim.",
+  "dates": [
+    {
+      "value": "2026-05-21",
+      "type": "repository_created",
+      "source": "GitHub API repos/steveonjava/hermes-neo4j-memory-plugin, read 2026-11-06"
+    }
+  ],
+  "license_observed": "Apache-2.0",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Role is author on the owner's statement that earlier commit attribution to another account was an e-mail error, now being fixed. On 2026-11-06 the commits API linked every commit on main to the owner's account while the contributors tally still listed a second account; the tally is cached and should be rechecked.",
+      "checked": "2026-11-06"
+    },
+    {
+      "kind": "flag",
+      "text": "The summary is reworded from the README. The code and tests were not run.",
+      "checked": "2026-11-06"
+    }
+  ],
+  "summary": "A plugin that gives Hermes Agent long-term memory backed by a Neo4j property graph. It connects the neo4j-agent-memory library to Hermes as a memory provider, so entities, preferences and facts persist across sessions and can be found again with semantic search using vector similarity. It adds five memory tools, works with the LLM and embedding providers that neo4j-agent-memory supports, includes a setup wizard, and if Neo4j cannot be reached it marks itself unavailable so Hermes carries on without memory instead of crashing. Open source under the Apache 2.0 license.",
+  "featured_rank": 3
+}
