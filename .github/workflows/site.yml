@@ -84,9 +84,27 @@ jobs:
           cache: npm
       - name: Install the locked dependencies without running package scripts
         run: npm ci --ignore-scripts
+      # The runner's apt mirror has stalled for minutes between packages and used up the whole step timeout.
+      # Give apt a short no-data timeout and retries, then bound each attempt of the install and try again.
+      - name: Make apt give up on a stalled download and retry it
+        run: |
+          printf 'Acquire::Retries "5";\nAcquire::http::Timeout "20";\nAcquire::https::Timeout "20";\n' | sudo tee /etc/apt/apt.conf.d/99-ci-retries
       - name: Install the browser on the CI runner only
-        timeout-minutes: 8
-        run: npx playwright install --with-deps chromium
+        timeout-minutes: 10
+        env:
+          ATTEMPT_SECONDS: '150'
+        run: |
+          set -eu
+          for attempt in 1 2 3; do
+            if timeout --kill-after=10 "$ATTEMPT_SECONDS" npx playwright install --with-deps chromium; then
+              exit 0
+            fi
+            echo "Attempt $attempt did not finish. Repairing the package state and trying again."
+            sudo dpkg --configure -a || true
+            sleep 5
+          done
+          echo "The browser did not install after three attempts." >&2
+          exit 1
       - name: Pages at 390 px and 1280 px (axe, overflow, keyboard, no-JavaScript, filters, search)
         env:
           SITE_DIR: dist-preview
