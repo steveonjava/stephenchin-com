@@ -1,34 +1,49 @@
-name: Publish placeholder to GitHub Pages
-# Started by hand from the Actions tab, and only after the owner has set the Pages source to GitHub Actions.
+name: Publish the site to GitHub Pages
+# Builds the production site in CI and publishes it when main changes. A pull request builds and audits the same
+# artifact without deploying, so this exact workflow is exercised before it merges. A manual run redeploys main.
 # GitHub ignores a CNAME file for workflow deployments, so the custom domain is set in the Pages settings.
 on:
+  push:
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
+# A pull request run must never queue behind, or replace, a pending deploy, so it gets its own group.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   build:
+    name: production build
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
-      # Pins match the archive repositories: checkout v7.0.1, upload-pages-artifact v5.0.0, deploy-pages v5.0.1.
+      # Pins match site.yml and the archive repositories: checkout v7.0.1, setup-node v7.1.0,
+      # upload-pages-artifact v5.0.0, deploy-pages v5.0.1.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - name: Validate the pages
-        run: python3 scripts/check.py
-      - name: Stage only the published files
-        run: |
-          mkdir _site
-          cp index.html 404.html style.css _site/
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install the locked dependencies without running package scripts
+        run: npm ci --ignore-scripts
+      - name: Validate the catalog files
+        run: python3 -I scripts/check_catalog.py
+      - name: Build production (published records only)
+        run: npm run build:production
+      - name: Audit the production output, including that no unreviewed record leaks into it
+        run: python3 -I scripts/check_output.py production dist-production
       - name: Package the site
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
         with:
-          path: _site/
+          path: dist-production/
           retention-days: 3
   deploy:
+    # Only a push to main or a manual run deploys. A pull request stops after the audited build.
+    if: ${{ github.event_name != 'pull_request' }}
     needs: build
     runs-on: ubuntu-24.04
     timeout-minutes: 5

@@ -33,7 +33,7 @@ verify_backup = load("verify_backup")
 ruleset_body = load("ruleset_body")
 
 FILES = {
-    "stephenchin-com": {"README.md": "x", "AGENTS.md": "x", "index.html": "x", ".github/workflows/pages.yml": "x"},
+    "stephenchin-com": {"README.md": "x", "AGENTS.md": "x", "package.json": "x", ".github/workflows/pages.yml": "x"},
     "steveonjava-com-archive": {"README.md": "x", "CNAME": "steveonjava.com", ".github/workflows/pages.yml": "x"},
     "nighthacking-tv-archive": {"README.md": "x", "CNAME": "nighthacking.tv", ".github/workflows/pages.yml": "x"},
 }

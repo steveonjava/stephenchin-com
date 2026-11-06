@@ -27,7 +27,7 @@ from pathlib import Path
 
 results = []
 REQUIRED_FILES = {
-    "stephenchin-com": ["README.md", "AGENTS.md", "index.html", ".github/workflows/pages.yml"],
+    "stephenchin-com": ["README.md", "AGENTS.md", "package.json", ".github/workflows/pages.yml"],
     "steveonjava-com-archive": ["README.md", "CNAME", ".github/workflows/pages.yml"],
     "nighthacking-tv-archive": ["README.md", "CNAME", ".github/workflows/pages.yml"],
 }
