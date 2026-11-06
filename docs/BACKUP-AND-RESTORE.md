@@ -68,7 +68,7 @@ Pull requests and issues are not restored by this. They remain in `api/NAME/pull
 
 ## A deploy went wrong
 
-Revert through a pull request, then run the Pages workflow again. A revert is a normal reviewed change, so the `preview` check and the ruleset still apply. Do not force-push `main`; the ruleset blocks it.
+Revert through a pull request, then run the Pages workflow again. A revert is a normal reviewed change, so the ruleset still requires a pull request. The `preview` workflow still runs on every pull request, but the ruleset no longer makes it a required check. Do not force-push `main`; the ruleset blocks it.
 
 ## DNS is wrong or lost
 
