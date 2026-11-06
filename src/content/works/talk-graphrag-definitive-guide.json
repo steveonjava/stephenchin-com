@@ -1,0 +1,49 @@
+{
+  "title": "GraphRAG: The Definitive Guide - A Field Guide to Patterns, Trade-offs, and Production Systems",
+  "kind": "talk",
+  "topics": [
+    "ai",
+    "graphs",
+    "graphrag"
+  ],
+  "source_ids": [
+    "S45",
+    "S46"
+  ],
+  "url": "https://www.youtube.com/watch?v=7FUyuc-AM5Q",
+  "year": 2026,
+  "stephen_role": "speaker",
+  "review_status": "published",
+  "verification_status": "source_page_read",
+  "rights_status": "link_only",
+  "event": "The AI Conference 2026",
+  "note": "The short keynote recording on The AI Conference channel, chosen by the owner on 2026-11-06. A 30-minute session with the same title was scheduled for AI Engineer Paris on 2026-09-24; no recording of it was found, so it has no record.",
+  "dates": [
+    {
+      "value": "2026-09-30",
+      "type": "event",
+      "source": "events.neo4j.com/aiconference2026 session listing: Wednesday, September 30, 10:20 AM PT, Theater 1"
+    },
+    {
+      "value": "2026-10-07",
+      "type": "upload",
+      "source": "YouTube watch page, publishDate 2026-10-07"
+    }
+  ],
+  "platform_video_id": "7FUyuc-AM5Q",
+  "page_title_observed": "Stephen Chin | Keynote: GraphRAG: The Definitive Guide - Patterns, Trade-offs & Production Systems",
+  "audit": [
+    {
+      "kind": "flag",
+      "text": "Recording identified from the watch page and an oEmbed request (HTTP 200, public, playable, 11:27). Not watched. The summary is reworded from the abstract the conference and Neo4j publish for this session.",
+      "checked": "2026-11-06"
+    },
+    {
+      "kind": "flag",
+      "text": "The video is copyright The AI Conference. The catalog links to it and does not embed, copy or caption it.",
+      "checked": "2026-11-06"
+    }
+  ],
+  "summary": "GraphRAG has become a catch-all term for graph-enhanced retrieval, Text2Cypher, agent memory and community-based summarization, which creates confusion about what \"use GraphRAG\" actually means. This keynote gives AI engineers a practical map of the landscape. It starts from the limits of vector-only RAG on data that is connected, multi-hop, dynamic or needs to be explainable, then breaks GraphRAG into building blocks: constructing knowledge graphs from structured and unstructured data, choosing among lexical, domain and meta graphs, and applying retrieval patterns. GraphRAG is treated as a toolbox with clear trade-offs, not one recipe, with evaluation, governance and production readiness in view from the start.",
+  "featured_rank": 1
+}

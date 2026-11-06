@@ -149,6 +149,10 @@ class CatalogChecks(unittest.TestCase):
         unverified = record(review_status="published", summary="s", rights_status="link_only", verification_status="search_only")
         self.assertTrue(any("verification_status" in e for e in problems(works={"a-talk": unverified})))
 
+    def test_a_complete_published_featured_record_passes(self):
+        good = record(review_status="published", rights_status="link_only", summary="A reviewed summary.", featured_rank=1)
+        self.assertEqual(problems(works={"a-talk": good}), [])
+
     def test_at_most_three_featured_and_ranks_are_unique(self):
         works = {}
         for i in range(4):

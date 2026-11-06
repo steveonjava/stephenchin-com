@@ -2,10 +2,13 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readdirSync, readFileSync, mkdirSync } from 'node:fs';
 
-const CAND = 'src/content/candidates';
-const candidates = readdirSync(CAND).filter((f) => f.endsWith('.json')).map((f) => ({ id: f.slice(0, -5), ...JSON.parse(readFileSync(`${CAND}/${f}`, 'utf8')) }));
+const readFolder = (dir) => readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => ({ id: f.slice(0, -5), ...JSON.parse(readFileSync(`${dir}/${f}`, 'utf8')) }));
+// The preview build shows the reviewed records and the unreviewed candidates together, so the expected counts come from both.
+const works = readFolder('src/content/works');
+const candidates = [...works, ...readFolder('src/content/candidates')].filter((c) => c.review_status !== 'rejected');
+const featuredIds = works.filter((w) => typeof w.featured_rank === 'number').sort((a, b) => a.featured_rank - b.featured_rank).map((w) => w.id);
 const profile = JSON.parse(readFileSync('src/data/profile.json', 'utf8'));
-const KEY_PAGES = ['/', '/work/', '/talks/', '/topics/', '/topics/javafx/', '/work/talk-crabrag/', '/search/', '/404.html'];
+const KEY_PAGES = ['/', '/work/', '/talks/', '/topics/', '/topics/javafx/', '/work/talk-crabrag/', '/work/talk-graphrag-definitive-guide/', '/search/', '/404.html'];
 
 mkdirSync('screenshots', { recursive: true });
 const slug = (p) => (p === '/' ? 'home' : p.replace(/^\/|\/$/g, '').replace(/[/.]/g, '-'));
@@ -36,6 +39,18 @@ test.describe('home profile', () => {
     await expect(img).toBeVisible();
     await expect(img).toHaveAttribute('alt', profile.headshot_alt);
     expect(await img.evaluate((el) => el.naturalWidth), 'portrait decoded').toBeGreaterThan(0);
+  });
+});
+
+test.describe('selected work on the home page', () => {
+  test('shows the featured records in rank order, each linking to its own page', async ({ page }) => {
+    expect(featuredIds.length, 'the owner chose three').toBe(3);
+    await page.goto('/');
+    const rows = page.locator('section[aria-labelledby="selected"] .record');
+    await expect(rows).toHaveCount(featuredIds.length);
+    const hrefs = await rows.locator('h3 a').evaluateAll((links) => links.map((a) => a.getAttribute('href')));
+    expect(hrefs).toEqual(featuredIds.map((id) => `/work/${id}/`));
+    await expect(page.locator('.review')).toHaveCount(0);
   });
 });
 

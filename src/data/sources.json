@@ -148,9 +148,9 @@
     "title": "Neo4j GraphRAG early release",
     "url": "https://neo4j.com/books/oreilly-graphrag-definitive-guide/",
     "source_kind": "publisher",
-    "verification_status": "search_discovery_only",
-    "checked_date": "2026-10-21",
-    "note": ""
+    "verification_status": "source_page_read",
+    "checked_date": "2026-11-06",
+    "note": "Early-release landing page read on 2026-11-06."
   },
   {
     "id": "S18",
@@ -394,5 +394,32 @@
     "verification_status": "source_page_read",
     "checked_date": "2026-10-21",
     "note": ""
+  },
+  {
+    "id": "S45",
+    "title": "The AI Conference keynote recording on YouTube",
+    "url": "https://www.youtube.com/watch?v=7FUyuc-AM5Q",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-11-06",
+    "note": "Watch page: channel The AI Conference, 11:27, published 2026-10-07, public, playable; oEmbed returned HTTP 200. Not watched."
+  },
+  {
+    "id": "S46",
+    "title": "The AI Conference 2026 on the Neo4j event page",
+    "url": "https://events.neo4j.com/aiconference2026",
+    "source_kind": "primary",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-11-06",
+    "note": "Lists the keynote for Wednesday 2026-09-30, 10:20 AM PT, Theater 1, with the abstract."
+  },
+  {
+    "id": "S47",
+    "title": "hermes-neo4j-memory-plugin on GitHub",
+    "url": "https://github.com/steveonjava/hermes-neo4j-memory-plugin",
+    "source_kind": "author_project",
+    "verification_status": "source_page_read",
+    "checked_date": "2026-11-06",
+    "note": "README, LICENSE and commit list read through the GitHub API. Code and tests not run."
   }
 ]
