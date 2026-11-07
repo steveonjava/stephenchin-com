@@ -1,6 +1,6 @@
 name: Site preview
-# Builds the Astro site in CI only. Nothing here deploys: the published page is still the placeholder,
-# started by hand from pages.yml. The preview build is noindex and shows candidate records for review.
+# Builds the Astro preview in CI only. Nothing here deploys: pages.yml builds and publishes the production site.
+# The preview build is noindex and shows candidate records for review.
 on:
   push:
     branches: ['**']
@@ -25,6 +25,8 @@ jobs:
         run: python3 -I tests/test_checks.py
       - name: Self-tests for the backup and restore scripts
         run: python3 -I tests/test_backup.py
+      - name: Self-tests for the live-site verifier
+        run: python3 -I tests/test_ops.py
       - name: Validate the catalog files
         run: python3 -I scripts/check_catalog.py
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1

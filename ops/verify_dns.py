@@ -2,7 +2,10 @@
 """Read-only check of a GitHub Pages custom domain: DNS records, TLS and HTTP behaviour. Standard library only.
 
 usage: python3 -I verify_stephenchin_dns.py [--dns-only] [--domain stephenchin.com]
-           [--expect-title "Stephen Chin"] [--expect-robots noindex,nofollow] [--asset /style.css]
+           [--expect-title "Stephen Chin"] [--expect-robots none] [--asset /robots.txt]
+
+--expect-robots none means the home page must carry no robots meta tag at all (an indexable page). Any other
+value must match the tag's content exactly, for example noindex,nofollow for the old placeholder.
 
 Exit status 0 only if every check passes. Each line is PASS or FAIL with the observed value.
 
@@ -15,6 +18,7 @@ verification is always on. TXT values are never printed.
 import argparse
 import datetime
 import json
+import re
 import secrets
 import socket
 import ssl
@@ -98,6 +102,13 @@ def request(host, ip, port, tls, path):
     return int(lines[0].split()[1]), headers, body.decode("utf-8", "replace"), cert
 
 
+def robots_meta_matches(body, expected):
+    """expected == 'none': no robots meta tag at all. Otherwise the tag must carry exactly that content."""
+    if expected == "none":
+        return re.search(r"<meta[^>]+name=[\"']?robots", body, re.I) is None
+    return f'<meta name="robots" content="{expected}">' in body
+
+
 def http_checks(domain, title, robots, asset):
     ip = address(domain)
     if not ip:
@@ -108,7 +119,7 @@ def http_checks(domain, title, robots, asset):
         record(status == 200, f"https://{domain}/ status", f"{status} via {ip}, certificate verified")
         lowered = body.lower()
         record(f"<title>{title.lower()}" in lowered or title.lower() in lowered.split("</title>")[0], "page title", f"expects {title!r}")
-        record(f'<meta name="robots" content="{robots}">' in body, "robots meta", f"expects {robots}")
+        record(robots_meta_matches(body, robots), "robots meta", f"expects {robots}")
         sans = sorted(v for k, v in cert["subjectAltName"] if k == "DNS")
         record(domain in sans and "www." + domain in sans, "certificate covers apex and www", f"SAN={sans}")
         expires = datetime.datetime.strptime(cert["notAfter"], "%b %d %H:%M:%S %Y %Z").replace(tzinfo=datetime.timezone.utc)
@@ -129,14 +140,18 @@ def http_checks(domain, title, robots, asset):
             record(False, label, f"{type(error).__name__}: {error}")
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--domain", default="stephenchin.com")
     parser.add_argument("--dns-only", action="store_true")
     parser.add_argument("--expect-title", default="Stephen Chin")
-    parser.add_argument("--expect-robots", default="noindex,nofollow")
-    parser.add_argument("--asset", default="/style.css")
-    args = parser.parse_args()
+    parser.add_argument("--expect-robots", default="none")
+    parser.add_argument("--asset", default="/robots.txt")
+    return parser
+
+
+def main():
+    args = build_parser().parse_args()
     print(f"checked {datetime.datetime.now(datetime.timezone.utc):%Y-%m-%d %H:%M:%SZ} domain={args.domain}")
     dns_checks(args.domain)
     if not args.dns_only:

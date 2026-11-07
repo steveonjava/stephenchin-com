@@ -61,14 +61,14 @@ If the repository was deleted less than 90 days ago, GitHub can restore it from 
    The helper keeps only the writable fields. I checked that its output equals the live ruleset for all three repositories. I have not run the POST against a fresh repository.
 4. **Re-create the settings** from `api/NAME/repo.json` and `pages.json`: squash merge only for the two archives (all methods for `stephenchin-com`), Pages source set to GitHub Actions, the `github-pages` environment limited to `main`, and `delete_branch_on_merge` as saved. The owner sets Pages and the custom domain.
 5. **Set the custom domain** in the Pages settings (`CNAME` files are ignored for workflow deployments), then enforce HTTPS once the certificate is issued. The `_github-pages-challenge-steveonjava` TXT records belong to the account, not the repository, and must be kept, so verification survives a rebuild.
-6. **Deploy.** The archives deploy when `main` changes, or by hand. `stephenchin-com` deploys only by hand (`pages.yml` is `workflow_dispatch`).
+6. **Deploy.** All three repositories deploy when `main` changes, or by hand from the Actions tab.
 7. **Verify** with the commands under "Verify the live sites".
 
 Pull requests and issues are not restored by this. They remain in `api/NAME/pull-requests.json` and `issues.json` as a record.
 
 ## A deploy went wrong
 
-Revert through a pull request, then run the Pages workflow again. A revert is a normal reviewed change, so the ruleset still requires a pull request. The `preview` workflow still runs on every pull request, but the ruleset no longer makes it a required check. Do not force-push `main`; the ruleset blocks it.
+Revert through a pull request. `stephenchin-com` deploys on every push to `main`, so a revert goes live when it merges. Reverting the launch commit itself brings back the old placeholder workflow, which runs only by hand, so start it from the Actions tab and verify with `--expect-robots noindex,nofollow --asset /style.css`. A revert is a normal reviewed change, so the ruleset still requires a pull request. The `preview` workflow still runs on every pull request, but the ruleset no longer makes it a required check. Do not force-push `main`; the ruleset blocks it.
 
 ## DNS is wrong or lost
 
@@ -91,7 +91,7 @@ Compare the live records with `dns/snapshot.json`, then with the expectations be
 All read-only. They resolve over public DNS-over-HTTPS because the lab resolver appends a wildcard suffix.
 
 ```
-python3 -I ops/verify_dns.py                       # stephenchin.com, the placeholder
+python3 -I ops/verify_dns.py                       # stephenchin.com, the Astro site
 python3 -I ops/verify_dns.py --domain steveonjava.com --expect-title "Latest Posts | SteveOnJava" --expect-robots index,follow --asset /assets/archive.css
 python3 -I ops/verify_dns.py --domain nighthacking.tv --expect-title "Latest Videos | NightHacking" --expect-robots index,follow --asset /assets/archive.css
 python3 -I ops/verify_subdomain_redirects.py
@@ -119,7 +119,7 @@ Read from the public registry (RDAP) on 2026-11-05: `steveonjava.com` expires **
 Before the production launch, and every quarter after (next by 2027-02-05):
 
 1. Make a backup and verify it with `--live`. All checks must pass.
-2. Restore the placeholder: clone its bundle into an empty folder, check out the saved tip, run `python3 -I scripts/check.py`.
+2. Restore the site source: clone its bundle into an empty folder, check out the saved tip, and run `python3 -I scripts/check_catalog.py` there. CI builds the site, so the drill does not.
 3. Run `scripts/ruleset_body.py` for each repository and confirm it produces a body.
 4. Run the four live-site verifiers above.
 5. Compare `dns/snapshot.json` with a fresh snapshot. Investigate any difference.
