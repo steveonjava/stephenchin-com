@@ -31,6 +31,37 @@ test.describe('every key template', () => {
   }
 });
 
+test.describe('page title and favicon', () => {
+  test('home has the approved title without changing another page title', async ({ page }) => {
+    await page.goto('/');
+    await expect(page).toHaveTitle('Stephen Chin | Author, Speaker and VP of Developer Relations');
+    await page.goto('/work/');
+    await expect(page).toHaveTitle('Work | Stephen Chin');
+  });
+
+  for (const path of ['/', '/work/', '/404.html']) {
+    test(`${path}: favicon is same-origin, served and decodable`, async ({ page, request }) => {
+      await page.goto(path);
+      const icon = page.locator('link[rel="icon"]');
+      await expect(icon).toHaveCount(1);
+      await expect(icon).toHaveAttribute('href', '/favicon.png');
+      await expect(icon).toHaveAttribute('type', 'image/png');
+      await expect(icon).toHaveAttribute('sizes', '64x64');
+      const response = await request.get('/favicon.png');
+      expect(response.status()).toBe(200);
+      expect(response.headers()['content-type']).toContain('image/png');
+      expect(await response.body()).toEqual(readFileSync('public/favicon.png'));
+      const dimensions = await page.evaluate(async () => {
+        const image = new Image();
+        image.src = document.querySelector('link[rel="icon"]').href;
+        await image.decode();
+        return [image.naturalWidth, image.naturalHeight];
+      });
+      expect(dimensions).toEqual([64, 64]);
+    });
+  }
+});
+
 test.describe('home profile', () => {
   test('shows the supplied bio word for word and a portrait that loads', async ({ page }) => {
     await page.goto('/');
