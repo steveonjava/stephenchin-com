@@ -262,6 +262,34 @@ def audit_output(mode, profile=PROFILE, **kw):
         return output.audit(mode, dist, tmp)
 
 
+class SocialChecks(unittest.TestCase):
+    def test_escaped_text_and_wrong_or_duplicate_tags(self):
+        title = 'A "quoted" title & Stephen\'s work'
+        description = 'A description with "quotes" & an apostrophe: it\'s here.'
+        alt = 'Portrait of Stephen Chin with his name and stephenchin.com'
+        for mode in ('preview', 'production'):
+            image = ('https://stephenchin.com' if mode == 'production' else '') + '/social-card.jpg'
+            values = {
+                'description': description, 'og:type': 'website', 'og:site_name': 'Stephen Chin',
+                'og:title': title, 'og:description': description, 'og:image': image,
+                'og:image:width': '1200', 'og:image:height': '630', 'og:image:alt': alt,
+                'twitter:card': 'summary_large_image', 'twitter:title': title,
+                'twitter:description': description, 'twitter:image': image, 'twitter:image:alt': alt,
+            }
+            if mode == 'production':
+                values['og:url'] = 'https://stephenchin.com/work/test/'
+            markup = '<title>' + html.escape(title) + '</title>'
+            markup += ''.join(f'<meta name="{k}" content="{html.escape(v, quote=True)}">' for k, v in values.items())
+            parsed = output.Page()
+            parsed.feed(markup)
+            self.assertEqual(parsed.titles, [title])
+            self.assertEqual(output.social_errors(parsed, '/work/test/', mode), [])
+            parsed.meta['og:title'].append('injected')
+            self.assertTrue(any('og:title' in e for e in output.social_errors(parsed, '/work/test/', mode)))
+            parsed.meta['og:image'] = ['/broken.jpg']
+            self.assertTrue(any('og:image' in e for e in output.social_errors(parsed, '/work/test/', mode)))
+
+
 class OutputChecks(unittest.TestCase):
     def test_good_preview_passes(self):
         self.assertEqual(audit_output("preview"), [])

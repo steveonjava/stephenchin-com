@@ -73,6 +73,40 @@ test.describe('home profile', () => {
   });
 });
 
+test.describe('social metadata', () => {
+  for (const path of ['/', '/work/', '/topics/javafx/', '/work/talk-agentic-graphrag/', '/404.html']) {
+    test(`${path}: escaped title and description match the social tags`, async ({ page }) => {
+      await page.goto(path);
+      const title = await page.title();
+      const descriptions = page.locator('meta[name="description"]');
+      const description = await descriptions.count() ? await descriptions.getAttribute('content') : title;
+      await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', title);
+      await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', title);
+      await expect(page.locator('meta[property="og:description"]')).toHaveAttribute('content', description);
+      await expect(page.locator('meta[name="twitter:description"]')).toHaveAttribute('content', description);
+      await expect(page.locator('meta[property="og:url"]')).toHaveCount(0);
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', '/social-card.jpg');
+      if (path === '/work/talk-agentic-graphrag/') expect(title).toContain("AI's");
+      if (path === '/') expect(description).toBe("Explore Stephen Chin's talks, books, writing and projects on AI, graph technology, Java, open source and developer communities.");
+    });
+  }
+  test('the preview card is served locally and decodes at its declared dimensions', async ({ page, request }) => {
+    await page.goto('/');
+    const response = await request.get('/social-card.jpg');
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toContain('image/jpeg');
+    expect(await response.body()).toEqual(readFileSync('public/social-card.jpg'));
+    const dimensions = await page.evaluate(async () => {
+      const image = new Image();
+      image.src = document.querySelector('meta[property="og:image"]').content;
+      await image.decode();
+      return [image.naturalWidth, image.naturalHeight];
+    });
+    expect(dimensions).toEqual([1200, 630]);
+    await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', /Portrait of Stephen Chin/);
+  });
+});
+
 test.describe('selected work on the home page', () => {
   test('shows the featured records in rank order, each linking to its own page', async ({ page }) => {
     expect(featuredIds.length, 'the owner chose three').toBe(3);

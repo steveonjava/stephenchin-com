@@ -27,6 +27,8 @@ class Page(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.hrefs, self.srcs, self.robots, self.canonical = [], [], [], []
         self.jsonld, self.h1, self.errors = [], 0, []
+        self.meta, self.titles = {}, []
+        self._title = False
         self._ld = False
         self._buf = []
 
@@ -41,6 +43,11 @@ class Page(HTMLParser):
                 self.srcs.append(a["href"])
         if tag == "meta" and a.get("name") == "robots":
             self.robots.append(a.get("content"))
+        if tag == "meta" and (a.get("property") or a.get("name")):
+            self.meta.setdefault(a.get("property") or a.get("name"), []).append(a.get("content"))
+        if tag == "title":
+            self._title = True
+            self.titles.append("")
         if tag == "script":
             if a.get("src"):
                 self.srcs.append(a["src"])
@@ -57,11 +64,15 @@ class Page(HTMLParser):
             self.errors.append("form with an action")
 
     def handle_endtag(self, tag):
+        if tag == "title":
+            self._title = False
         if tag == "script" and self._ld:
             self.jsonld.append("".join(self._buf))
             self._ld = False
 
     def handle_data(self, data):
+        if self._title:
+            self.titles[-1] += data
         if self._ld:
             self._buf.append(data)
 
@@ -75,6 +86,62 @@ def url_of(dist, path):
     if rel.endswith("index.html"):
         return "/" + rel[: -len("index.html")]
     return "/" + rel
+
+
+def social_errors(page, url, mode):
+    """Check decoded text and every social tag, including duplicate and malformed tags."""
+    errors = []
+    if len(page.titles) != 1 or not page.titles[0]:
+        return [f"{url}: expected one nonempty title"]
+    title = page.titles[0]
+    description = page.meta.get("description", [title])
+    if len(description) != 1 or not description[0]:
+        return [f"{url}: invalid description"]
+    image = (SITE if mode == "production" else "") + "/social-card.jpg"
+    alt = "Portrait of Stephen Chin with his name and stephenchin.com"
+    expected = {
+        "og:type": "website", "og:site_name": "Stephen Chin", "og:title": title,
+        "og:description": description[0], "og:image": image,
+        "og:image:width": "1200", "og:image:height": "630", "og:image:alt": alt,
+        "twitter:card": "summary_large_image", "twitter:title": title,
+        "twitter:description": description[0], "twitter:image": image, "twitter:image:alt": alt,
+    }
+    if mode == "production":
+        expected["og:url"] = SITE + url
+    elif "og:url" in page.meta:
+        errors.append(f"{url}: preview must not claim a production social URL")
+    for key, value in expected.items():
+        if page.meta.get(key) != [value]:
+            errors.append(f"{url}: {key} {page.meta.get(key)!r}, expected {[value]!r}")
+    return errors
+
+
+def audit_social(mode, dist):
+    dist = Path(dist)
+    errors = []
+    if not (dist / "social-card.jpg").is_file():
+        errors.append("social-card.jpg missing")
+    for path in pages(dist):
+        url = url_of(dist, path)
+        page = Page()
+        page.feed(path.read_text(encoding="utf8"))
+        errors.extend(social_errors(page, url, mode))
+        if url == "/":
+            expected = "Explore Stephen Chin's talks, books, writing and projects on AI, graph technology, Java, open source and developer communities."
+            if page.meta.get("description") != [expected]:
+                errors.append("/: homepage description does not match approved copy")
+            people = []
+            for blob in page.jsonld:
+                try:
+                    data = json.loads(blob)
+                    if data.get("@type") == "Person":
+                        people.append(data)
+                except ValueError:
+                    pass  # The main audit reports malformed JSON-LD.
+            profiles = ["https://github.com/steveonjava", "https://www.linkedin.com/in/steveonjava/", "https://twitter.com/steveonjava"]
+            if len(people) != 1 or people[0].get("sameAs") != profiles:
+                errors.append("/: Person sameAs does not match approved profiles")
+    return errors
 
 
 def resolves(dist, href, current):
@@ -303,6 +370,7 @@ def main():
         return 2
     root = sys.argv[3] if len(sys.argv) > 3 else Path(__file__).resolve().parents[1]
     errors = audit(sys.argv[1], sys.argv[2], root)
+    errors += audit_social(sys.argv[1], sys.argv[2])
     for e in errors:
         print("FAIL", e)
     print(f"{sys.argv[1]} output: {len(errors)} problem(s)")
