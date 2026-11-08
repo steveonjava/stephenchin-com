@@ -106,10 +106,10 @@ def social_errors(page, url, mode):
         "twitter:card": "summary_large_image", "twitter:title": title,
         "twitter:description": description[0], "twitter:image": image, "twitter:image:alt": alt,
     }
-    if mode == "production":
+    if mode == "production" and url != "/404.html":
         expected["og:url"] = SITE + url
     elif "og:url" in page.meta:
-        errors.append(f"{url}: preview must not claim a production social URL")
+        errors.append(f"{url}: preview and 404 pages must not claim a production social URL")
     for key, value in expected.items():
         if page.meta.get(key) != [value]:
             errors.append(f"{url}: {key} {page.meta.get(key)!r}, expected {[value]!r}")

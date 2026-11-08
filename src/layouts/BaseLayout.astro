@@ -31,7 +31,7 @@ const isCurrent = (href: string) => pathname === href || pathname.startsWith(hre
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={socialDescription} />
-    {!IS_PREVIEW && <meta property="og:url" content={canonical} />}
+    {!IS_PREVIEW && !noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
