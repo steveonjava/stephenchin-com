@@ -4,13 +4,14 @@ import { GITHUB_URL, IS_PREVIEW, NAV, SITE_NAME, SITE_URL } from '../site';
 
 interface Props {
   title?: string;
+  fullTitle?: string;
   description?: string;
   jsonLd?: Record<string, unknown>;
   indexed?: boolean;
   noindex?: boolean;
 }
-const { title, description, jsonLd, indexed = false, noindex = false } = Astro.props;
-const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
+const { title, fullTitle, description, jsonLd, indexed = false, noindex = false } = Astro.props;
+const pageTitle = fullTitle ?? (title ? `${title} | ${SITE_NAME}` : SITE_NAME);
 const pathname = Astro.url.pathname;
 const canonical = new URL(pathname, SITE_URL).href;
 const ld = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : null;
@@ -24,7 +25,7 @@ const isCurrent = (href: string) => pathname === href || pathname.startsWith(hre
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
     {IS_PREVIEW ? <meta name="robots" content="noindex,nofollow" /> : noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
-    <link rel="icon" href="data:," />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
     <link rel="alternate" type="application/rss+xml" title={SITE_NAME} href="/rss.xml" />
     {ld && <script is:inline type="application/ld+json" set:html={ld} />}
   </head>
