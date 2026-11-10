@@ -25,10 +25,10 @@ const person = {
   jobTitle: profile.job_title,
   worksFor: { '@type': 'Organization', name: profile.employer },
   image: new URL(photo.src, SITE_URL).href,
-  sameAs: [GITHUB_URL],
+  sameAs: [GITHUB_URL, 'https://www.linkedin.com/in/steveonjava/', 'https://twitter.com/steveonjava'],
 };
 ---
-<BaseLayout fullTitle="Stephen Chin | Author, Speaker and VP of Developer Relations" description="Talks, writing, books and projects by Stephen Chin, also known as steveonjava." jsonLd={person} indexed>
+<BaseLayout fullTitle="Stephen Chin | Author, Speaker and VP of Developer Relations" description="Explore Stephen Chin's talks, books, writing and projects on AI, graph technology, Java, open source and developer communities." jsonLd={person} indexed>
   <div class="intro">
     <Image class="portrait" src={headshot} alt={profile.headshot_alt} width={176} height={176} densities={[1, 2]} format="webp" quality={80} loading="eager" fetchpriority="high" />
     <div class="intro-text">
